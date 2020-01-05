@@ -1,9 +1,41 @@
+// http://paulmurraycbr.github.io/ArduinoTheOOWay.html
+
+class Runnable {
+  private:
+    static Runnable *headRunnable;
+    Runnable *nextRunnable;
+
+  public:
+    Runnable() {
+      nextRunnable = headRunnable;
+      headRunnable = this;
+    }
+
+    virtual void setup() = 0;
+    virtual void loop() = 0;
+
+    static void setupAll() {
+      for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
+        r->setup();
+      }
+    }
+
+    static void loopAll() {
+      for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
+        r->loop();
+      }
+    }
+
+};
+
+Runnable *Runnable::headRunnable = NULL;
+
 /**
  * Connection:
  *  {pin} <> [Led -]
  *  (-) <> [Led +]
  */
-class Led {
+class Led: public Runnable {
   private:
     const byte _pin;
     bool _state = false;
@@ -17,6 +49,8 @@ class Led {
       pinMode(_pin, OUTPUT);
       off();
     }
+
+    void loop() {}
     
     void on() {
       _state = true;
@@ -62,7 +96,7 @@ enum ButtonState {
  * Connection:
  *  {pin} <> [Switch] <> (-)
  */
-class Button {
+class Button: public Runnable {
   private:
     const byte _pin;
     int _state;
@@ -218,40 +252,12 @@ Led ledErr(12);
 //ProximityCheck pc(3, 2, A0);
 Button btn(3);
 
-int fs[] = {100, 100, 100, 100, 100, 100, 100};
-int fl[] = {500, 100, 500, 100, 500, 100, 500};
-
 void setup() {
-  ledState.setup();
-  ledErr.setup();
-  btn.setup();
+  Runnable::setupAll();
 }
 
 void loop() {
-  btn.loop();
-//  ledErr.off();
-//      
-//  switch (pc.doLoop()) {
-//    case 0:
-//      ledState.on();
-//      break;
-//    case 1:
-//      ledState.off();
-//      break;
-//    case 2:
-//      ledState.off();
-//      ledErr.on();
-//      break;
-//    case 3:
-//      ledState.off();
-//      ledErr.on();
-//      delay(500);
-//      ledErr.off();
-//      delay(100);
-//      ledErr.on();
-//      delay(500);
-//      break;
-//  }
+  Runnable::loopAll();
 
   switch (btn.getState()) {
     case ButtonState::NO:
