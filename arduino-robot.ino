@@ -184,7 +184,20 @@ class Button: public Runnable {
 };
 
 /**
+   Proximity Check State.
+   @see ProximityCheck
+*/
+enum ProximityCheckState {
+  NO_PROXIMITY = 0,
+  PROXIMITY = 1,
+  ERROR_FIRST_CHECK = 2,
+  CALIBRATION_INPROGRESS = 3,
+  CALIBRATION_FINISH = 4
+};
+
+/**
    @see https://pimylifeup.com/arduino-light-sensor
+   @see ProximityCheckState
    @connection
     {btn_pin} <> [Switch] <> (-)
     {led_pin} <> [Led +]
@@ -205,7 +218,7 @@ class ProximityCheck: public Runnable {
     };
     int _STEPS_LEN;
 
-    byte _result = 0;
+    byte _result = ProximityCheckState::NO_PROXIMITY;
     int _prox = 800;
 
     byte _checkInputState(bool state) {
@@ -251,8 +264,9 @@ class ProximityCheck: public Runnable {
 
     void loop() {
       if (_btn.isClicked()) {
+        _result = ProximityCheckState::CALIBRATION_INPROGRESS;
         calibrate();
-        _result = 3; // Calibration completed
+        _result = ProximityCheckState::CALIBRATION_FINISH; // Calibration completed
       } else {
         int i = 0;
         bool result = true;
@@ -268,16 +282,16 @@ class ProximityCheck: public Runnable {
           }
 
           if (!result && i == 0) {
-            _result = 2; // Error: First check is ON
+            _result = ProximityCheckState::ERROR_FIRST_CHECK; // Error: First check is ON
           }
 
           i++;
         }
 
         if (result) {
-          _result = 0; // No proximity
+          _result = ProximityCheckState::NO_PROXIMITY; // No proximity
         } else {
-          _result = 1; // Proximity
+          _result = ProximityCheckState::PROXIMITY; // Proximity
         }
       }
     }
@@ -416,17 +430,19 @@ void loop() {
 
   ledErr.off();
   switch (pc.getState()) {
-    case 0:
+    case ProximityCheckState::PROXIMITY:
       ledState.on();
       break;
-    case 1:
+    case ProximityCheckState::NO_PROXIMITY:
       ledState.off();
       break;
-    case 2:
+    case ProximityCheckState::ERROR_FIRST_CHECK:
       ledState.off();
       ledErr.on();
       break;
-    case 3:
+    case ProximityCheckState::CALIBRATION_INPROGRESS:
+      break;
+    case ProximityCheckState::CALIBRATION_FINISH:
       ledState.off();
       ledErr.on();
       delay(500);
