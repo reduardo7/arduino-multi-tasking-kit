@@ -29,7 +29,11 @@ class Runnable {
 };
 Runnable *Runnable::headRunnable = NULL;
 
-long arrayLen(int x[]) {
+unsigned long arrayLenInt(int *x) {
+  return sizeof(x) / sizeof(x[0]);
+}
+
+unsigned long arrayLenBool(bool *x) {
   return sizeof(x) / sizeof(x[0]);
 }
 
@@ -190,16 +194,15 @@ class Button: public Runnable {
 enum ProximityCheckState {
   NO_PROXIMITY = 0,
   PROXIMITY = 1,
-  ERROR_FIRST_CHECK = 2,
-  CALIBRATION_INPROGRESS = 3,
-  CALIBRATION_FINISH = 4
+  ERROR_FIRST_CHECK = 2
+//  CALIBRATION_INPROGRESS = 3,
+//  CALIBRATION_FINISH = 4
 };
 
 /**
    @see https://pimylifeup.com/arduino-light-sensor
    @see ProximityCheckState
    @connection
-    {btn_pin} <> [Switch] <> (-)
     {led_pin} <> [Led +]
     (-) <> [Led -]
     {apin_in} <> [R 10K] <> (-)
@@ -208,18 +211,18 @@ enum ProximityCheckState {
 */
 class ProximityCheck: public Runnable {
   private:
-    const Button _btn;
     const Led _led;
     const byte _apin_in;
 
     // First should be LOW, to check external light
-    const int _STEPS[4] = {
+    const bool _STEPS[4] = {
       false, true, false, true
     };
     int _STEPS_LEN;
 
     byte _result = ProximityCheckState::NO_PROXIMITY;
     int _prox = 800;
+//    bool _calibration_in_progress = false;
 
     byte _checkInputState(bool state) {
       _led.set(state);
@@ -252,22 +255,21 @@ class ProximityCheck: public Runnable {
     }
 
   public:
-    ProximityCheck(byte btn_pin, byte led_pin, byte apin_in) :
-      _btn(btn_pin),
+    ProximityCheck(byte led_pin, byte apin_in) :
       _led(led_pin),
       _apin_in(apin_in)
     {
-      _STEPS_LEN = arrayLen(_STEPS);
+      _STEPS_LEN = arrayLenBool(_STEPS);
     }
 
     void setup() {}
 
     void loop() {
-      if (_btn.isClicked()) {
-        _result = ProximityCheckState::CALIBRATION_INPROGRESS;
-        calibrate();
-        _result = ProximityCheckState::CALIBRATION_FINISH; // Calibration completed
-      } else {
+//      if (_calibration_in_progress) {
+//        _result = ProximityCheckState::CALIBRATION_INPROGRESS;
+//        calibrate();
+//        _result = ProximityCheckState::CALIBRATION_FINISH; // Calibration completed
+//      } else {
         int i = 0;
         bool result = true;
 
@@ -293,7 +295,7 @@ class ProximityCheck: public Runnable {
         } else {
           _result = ProximityCheckState::PROXIMITY; // Proximity
         }
-      }
+//      }
     }
 
     byte getState() {
@@ -301,8 +303,8 @@ class ProximityCheck: public Runnable {
     }
 
     void calibrate() {
-      int a = _calibrateMin();
       int b = _calibrateMax();
+      int a = _calibrateMin();
       _prox = a + (b - a) / 2;
     }
 };
@@ -356,7 +358,7 @@ class ProximityCheck: public Runnable {
 //      _led(led_pin),
 //      _apin_in(apin_in)
 //      {
-//        _STEPS_LEN = arrayLen(_STEPS);
+//        _STEPS_LEN = arrayLenInt(_STEPS);
 //      }
 //
 //    void setup() { }
@@ -405,14 +407,12 @@ class ProximityCheck: public Runnable {
 
 Led ledState(LED_BUILTIN);
 Led ledErr(12);
-ProximityCheck pc(3, 2, A0);
-//Button btn(3);
+ProximityCheck pc(2, A0);
+Button btn(3);
 
 void setup() {
   Runnable::setupAll();
 }
-
-//bool x = true;
 
 void loop() {
   Runnable::loopAll();
@@ -428,29 +428,35 @@ void loop() {
   //    ledErr.off();
   //  }
 
-  ledErr.off();
-  switch (pc.getState()) {
-    case ProximityCheckState::PROXIMITY:
-      ledState.on();
-      break;
-    case ProximityCheckState::NO_PROXIMITY:
-      ledState.off();
-      break;
-    case ProximityCheckState::ERROR_FIRST_CHECK:
-      ledState.off();
-      ledErr.on();
-      break;
-    case ProximityCheckState::CALIBRATION_INPROGRESS:
-      break;
-    case ProximityCheckState::CALIBRATION_FINISH:
-      ledState.off();
-      ledErr.on();
-      delay(500);
-      ledErr.off();
-      delay(100);
-      ledErr.on();
-      delay(500);
-      break;
+  if (btn.isClicked()) {
+    ledErr.off();
+    pc.calibrate();
+  } else {
+    switch (pc.getState()) {
+      case ProximityCheckState::PROXIMITY:
+        ledErr.off();
+        ledState.on();
+        break;
+      case ProximityCheckState::NO_PROXIMITY:
+        ledErr.off();
+        ledState.off();
+        break;
+      case ProximityCheckState::ERROR_FIRST_CHECK:
+        ledState.off();
+        ledErr.on();
+        break;
+//      case ProximityCheckState::CALIBRATION_INPROGRESS:
+//        break;
+//      case ProximityCheckState::CALIBRATION_FINISH:
+//        ledState.off();
+//        ledErr.on();
+//        delay(500);
+//        ledErr.off();
+//        delay(100);
+//        ledErr.on();
+//        delay(500);
+//        break;
+    }
   }
 
   //  switch (btn.getState()) {
