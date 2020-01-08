@@ -35,8 +35,8 @@ long arrayLen(int x[]) {
 
 /**
    @connection
-    {pin} <> [Led -]
-    (-) <> [Led +]
+    {pin} <> [Led +]
+    (-) <> [Led -]
 */
 class Led: public Runnable {
   private:
@@ -186,7 +186,12 @@ class Button: public Runnable {
 /**
    @see https://pimylifeup.com/arduino-light-sensor
    @connection
-
+    {btn_pin} <> [Switch] <> (-)
+    {led_pin} <> [Led +]
+    (-) <> [Led -]
+    {apin_in} <> [R 10K] <> (-)
+    {apin_in} <> [Light Sensor A]
+    [Light Sensor B] <> (+)
 */
 class ProximityCheck: public Runnable {
   private:
