@@ -214,7 +214,7 @@ class ProximityCheck: public Runnable {
     };
     int _STEPS_LEN;
 
-    byte _result = ProximityCheckState::NO_PROXIMITY;
+    ProximityCheckState _result = ProximityCheckState::NO_PROXIMITY;
     int _prox = 800;
 
     byte _checkInputState(bool state) {
@@ -285,7 +285,7 @@ class ProximityCheck: public Runnable {
       }
     }
 
-    byte getState() {
+    ProximityCheckState getState() {
       return _result;
     }
 
