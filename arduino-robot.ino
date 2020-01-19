@@ -296,12 +296,153 @@ class ProximityCheck: public Runnable {
     }
 };
 
+class LedDisplay: public Runnable {
+  private:
+    const Led _l1;
+    const Led _l2;
+    const Led _l3;
+    const Led _l4;
+    const Led _l5;
+    const Led _l6;
+    const Led _l7;
+    
+  public:
+    LedDisplay(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7) :
+      _l1(l1),
+      _l2(l2),
+      _l3(l3),
+      _l4(l4),
+      _l5(l5),
+      _l6(l6),
+      _l7(l7)
+    { }
+    
+    void setup() {
+      this->off();
+    }
+    
+    void loop() {}
+
+    void off() {
+      _l1.on();
+      _l2.on();
+      _l3.on();
+      _l4.on();
+      _l5.on();
+      _l6.on();
+      _l7.on();
+    }
+
+    void set(byte n) {
+      switch (n) {
+        case 0:
+          _l1.on();
+          _l2.off();
+          _l3.off();
+          _l4.off();
+          _l5.off();
+          _l6.off();
+          _l7.off();
+          break;
+        case 1:
+          _l1.on();
+          _l2.on();
+          _l3.on();
+          _l4.off();
+          _l5.on();
+          _l6.on();
+          _l7.off();
+          break;
+        case 2:
+          _l1.off();
+          _l2.on();
+          _l3.off();
+          _l4.off();
+          _l5.off();
+          _l6.off();
+          _l7.on();
+          break;
+        case 3:
+          _l1.off();
+          _l2.on();
+          _l3.off();
+          _l4.off();
+          _l5.on();
+          _l6.off();
+          _l7.off();
+          break;
+        case 4:
+          _l1.off();
+          _l2.off();
+          _l3.on();
+          _l4.off();
+          _l5.on();
+          _l6.on();
+          _l7.off();
+          break;
+        case 5:
+          _l1.off();
+          _l2.off();
+          _l3.off();
+          _l4.on();
+          _l5.on();
+          _l6.off();
+          _l7.off();
+          break;
+        case 6:
+          _l1.off();
+          _l2.on();
+          _l3.off();
+          _l4.off();
+          _l5.off();
+          _l6.off();
+          _l7.off();
+          break;
+        case 7:
+          _l1.on();
+          _l2.on();
+          _l3.off();
+          _l4.off();
+          _l5.on();
+          _l6.on();
+          _l7.off();
+          break;
+        case 8:
+          _l1.off();
+          _l2.off();
+          _l3.off();
+          _l4.off();
+          _l5.off();
+          _l6.off();
+          _l7.off();
+          break;
+        case 9:
+          _l1.off();
+          _l2.off();
+          _l3.off();
+          _l4.off();
+          _l5.on();
+          _l6.on();
+          _l7.off();
+          break;
+        default:
+          this->off();
+          break;
+      }
+    }
+};
+
 /* **************************************************************************** */
 
-Led ledState(13);
-Led ledErr(12);
-ProximityCheck pc(2, A0);
-Button btn(3);
+//Led ledState(13);
+//Led ledErr(12);
+//ProximityCheck pc(2, A0);
+//Button btn(3);
+
+LedDisplay disp(11, 10, 9, 8, 7, 6, 5);
+Button btnAdd(2);
+Button btnMin(3);
+byte num = 0;
 
 void setup() {
   Runnable::setupAll();
@@ -322,25 +463,34 @@ void loop() {
   //    ledErr.off();
   //  }
 
-  if (btn.isClicked()) {
-    ledErr.off();
-    pc.calibrate();
-  } else {
-    switch (pc.getState()) {
-      case ProximityCheckState::PROXIMITY:
-        ledErr.off();
-        ledState.on();
-        break;
-      case ProximityCheckState::NO_PROXIMITY:
-        ledErr.off();
-        ledState.off();
-        break;
-      case ProximityCheckState::ERROR_FIRST_CHECK:
-        ledState.off();
-        ledErr.on();
-        break;
-    }
+//  if (btn.isClicked()) {
+//    ledErr.off();
+//    pc.calibrate();
+//  } else {
+//    switch (pc.getState()) {
+//      case ProximityCheckState::PROXIMITY:
+//        ledErr.off();
+//        ledState.on();
+//        break;
+//      case ProximityCheckState::NO_PROXIMITY:
+//        ledErr.off();
+//        ledState.off();
+//        break;
+//      case ProximityCheckState::ERROR_FIRST_CHECK:
+//        ledState.off();
+//        ledErr.on();
+//        break;
+//    }
+//  }
+
+  if (btnAdd.isClicked()) {
+    num++;
   }
+  if (btnMin.isClicked()) {
+    num--;
+  }
+
+  disp.set(num);
 
   //  switch (btn.getState()) {
   //    case ButtonState::NO:
