@@ -1,3 +1,5 @@
+using namespace std;
+
 /**
    @see http://paulmurraycbr.github.io/ArduinoTheOOWay.html
 */
@@ -29,11 +31,8 @@ class Runnable {
 };
 Runnable *Runnable::headRunnable = NULL;
 
-unsigned long arrayLenInt(int *x) {
-  return sizeof(x) / sizeof(x[0]);
-}
-
-unsigned long arrayLenBool(bool *x) {
+template <typename T>
+unsigned long arrayLen(T *x) {
   return sizeof(x) / sizeof(x[0]);
 }
 
@@ -45,7 +44,6 @@ unsigned long arrayLenBool(bool *x) {
 class Led: public Runnable {
   private:
     const byte _pin;
-    bool _state = false;
     unsigned int _flash_duration = -1;
     unsigned int _flash_times = -1;
     unsigned int _flash_index = -1;
@@ -80,17 +78,15 @@ class Led: public Runnable {
     }
 
     void on() {
-      _state = true;
       digitalWrite(_pin, HIGH);
     }
 
     void off() {
-      _state = false;
       digitalWrite(_pin, LOW);
     }
 
     void invert() {
-      set(!_state);
+      set(!getState());
     }
 
     void set(bool state) {
@@ -102,7 +98,7 @@ class Led: public Runnable {
     }
 
     bool getState() {
-      return _state;
+      return digitalRead(_pin) == HIGH;
     }
 
     void flash(unsigned int duration, unsigned int times) {
@@ -195,8 +191,6 @@ enum ProximityCheckState {
   NO_PROXIMITY = 0,
   PROXIMITY = 1,
   ERROR_FIRST_CHECK = 2
-//  CALIBRATION_INPROGRESS = 3,
-//  CALIBRATION_FINISH = 4
 };
 
 /**
@@ -222,7 +216,6 @@ class ProximityCheck: public Runnable {
 
     byte _result = ProximityCheckState::NO_PROXIMITY;
     int _prox = 800;
-//    bool _calibration_in_progress = false;
 
     byte _checkInputState(bool state) {
       _led.set(state);
@@ -259,43 +252,37 @@ class ProximityCheck: public Runnable {
       _led(led_pin),
       _apin_in(apin_in)
     {
-      _STEPS_LEN = arrayLenBool(_STEPS);
+      _STEPS_LEN = arrayLen(_STEPS);
     }
 
     void setup() {}
 
     void loop() {
-//      if (_calibration_in_progress) {
-//        _result = ProximityCheckState::CALIBRATION_INPROGRESS;
-//        calibrate();
-//        _result = ProximityCheckState::CALIBRATION_FINISH; // Calibration completed
-//      } else {
-        int i = 0;
-        bool result = true;
+      int i = 0;
+      bool result = true;
 
-        while (result && i < _STEPS_LEN) {
-          bool state = _STEPS[i];
-          bool x = _checkInputState(state);
+      while (result && i < _STEPS_LEN) {
+        bool state = _STEPS[i];
+        byte x = _checkInputState(state);
 
-          if (state) {
-            result = x > _prox;
-          } else {
-            result = x < _prox;
-          }
-
-          if (!result && i == 0) {
-            _result = ProximityCheckState::ERROR_FIRST_CHECK; // Error: First check is ON
-          }
-
-          i++;
-        }
-
-        if (result) {
-          _result = ProximityCheckState::NO_PROXIMITY; // No proximity
+        if (state) {
+          result = x > _prox;
         } else {
-          _result = ProximityCheckState::PROXIMITY; // Proximity
+          result = x < _prox;
         }
-//      }
+
+        if (!result && i == 0) {
+          _result = ProximityCheckState::ERROR_FIRST_CHECK; // Error: First check is ON
+        }
+
+        i++;
+      }
+
+      if (result) {
+        _result = ProximityCheckState::NO_PROXIMITY; // No proximity
+      } else {
+        _result = ProximityCheckState::PROXIMITY; // Proximity
+      }
     }
 
     byte getState() {
@@ -308,110 +295,17 @@ class ProximityCheck: public Runnable {
       _prox = a + (b - a) / 2;
     }
 };
-//class ProximityCheck {
-//  private:
-//    const Button _btn;
-//    const Led _led;
-//    const byte _apin_in;
-//
-//    // First should be LOW, to check external light
-//    const int _STEPS[4] = {
-//      false, true, false, true
-//    };
-//    int _STEPS_LEN;
-//
-//    int _prox = -1;
-//
-//    byte _checkInputState(bool state) {
-//      _led.set(state);
-//      delay(50);
-//      return analogRead(_apin_in);
-//    }
-//
-//    int _calibrateMin() {
-//      int r = 1000;
-//
-//      for (int i = 0; i < 3; i++) {
-//        int x = _checkInputState(false);
-//        if (x < r) r = x;
-//        delay(100 * (i + 1));
-//      }
-//
-//      return r;
-//    }
-//
-//    int _calibrateMax() {
-//      int r = 0;
-//
-//      for (int i = 0; i < 3; i++) {
-//        int x = _checkInputState(true);
-//        if (x > r) r = x;
-//        delay(100 * (i + 1));
-//      }
-//
-//      return r;
-//    }
-//
-//  public:
-//    ProximityCheck(byte sw_pin, byte led_pin, byte apin_in) :
-//      _btn(sw_pin),
-//      _led(led_pin),
-//      _apin_in(apin_in)
-//      {
-//        _STEPS_LEN = arrayLenInt(_STEPS);
-//      }
-//
-//    void setup() { }
-//
-//    byte getState() {
-//      if (_prox == -1 || _btn.isClicked()) {
-//        calibrate();
-//        return 3; // Calibration completed
-//      } else {
-//        int i = 0;
-//        bool result = true;
-//
-//        while (result && i < _STEPS_LEN) {
-//          bool state = _STEPS[i];
-//          bool s = _checkInputState(state);
-//
-//          if (state) {
-//            result = s > _prox;
-//          } else {
-//            result = s < _prox;
-//          }
-//
-//          if (!result && i == 0) {
-//            return 2; // Error: First check is ON
-//          }
-//
-//          i++;
-//        }
-//
-//        if (result) {
-//          return 0; // No proximity
-//        } else {
-//          return 1; // Proximity
-//        }
-//      }
-//    }
-//
-//    void calibrate() {
-//      int a = _calibrateMin();
-//      int b = _calibrateMax();
-//      _prox = a + (b - a) / 2;
-//    }
-//};
 
 /* **************************************************************************** */
 
-Led ledState(LED_BUILTIN);
+Led ledState(13);
 Led ledErr(12);
 ProximityCheck pc(2, A0);
 Button btn(3);
 
 void setup() {
   Runnable::setupAll();
+//  ledErr.flash(500, 10);
 }
 
 void loop() {
@@ -445,17 +339,6 @@ void loop() {
         ledState.off();
         ledErr.on();
         break;
-//      case ProximityCheckState::CALIBRATION_INPROGRESS:
-//        break;
-//      case ProximityCheckState::CALIBRATION_FINISH:
-//        ledState.off();
-//        ledErr.on();
-//        delay(500);
-//        ledErr.off();
-//        delay(100);
-//        ledErr.on();
-//        delay(500);
-//        break;
     }
   }
 
