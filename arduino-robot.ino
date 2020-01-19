@@ -129,7 +129,7 @@ class ProximityCheck: public Runnable {
     };
     int _STEPS_LEN;
 
-    byte _result = ProximityCheckState::NO_PROXIMITY;
+    ProximityCheckState _result = ProximityCheckState::NO_PROXIMITY;
     int _prox = 800;
 
     byte _checkInputState(bool state) {
@@ -219,7 +219,7 @@ Button btn(3);
 
 void setup() {
   Runnable::setupAll();
-//  ledErr.flash(500, 10);
+  //  ledErr.flash(500, 10);
 }
 
 void loop() {
