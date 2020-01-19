@@ -15,17 +15,10 @@ class Runnable {
     }
 
     virtual void setup() = 0;
-    virtual void loop() = 0;
 
     static void setupAll() {
       for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
         r->setup();
-      }
-    }
-
-    static void loopAll() {
-      for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
-        r->loop();
       }
     }
 };
@@ -44,11 +37,6 @@ unsigned long arrayLen(T *x) {
 class Led: public Runnable {
   private:
     const byte _pin;
-    unsigned int _flash_duration = -1;
-    unsigned int _flash_times = -1;
-    unsigned int _flash_index = -1;
-    unsigned long _flash_time = 0;
-    unsigned long _flash_last_time = 0;
 
   public:
     Led(byte pin):
@@ -58,23 +46,6 @@ class Led: public Runnable {
     void setup() {
       pinMode(_pin, OUTPUT);
       off();
-    }
-
-    void loop() {
-      unsigned long m = millis();
-
-      if (isFlashing() && (m - _flash_last_time) >= _flash_duration) {
-        invert();
-        _flash_last_time = m;
-
-        if (_flash_times > 0) {
-          _flash_index++;
-        }
-      }
-    }
-
-    bool isFlashing() {
-      return (_flash_times <= 0 && _flash_duration > 0) || (_flash_index >= 0 && _flash_index < _flash_times);
     }
 
     void on() {
@@ -100,27 +71,6 @@ class Led: public Runnable {
     bool getState() {
       return digitalRead(_pin) == HIGH;
     }
-
-    void flash(unsigned int duration, unsigned int times) {
-      _flash_duration = duration;
-      _flash_times = times * 2; // One time on, one time off | times <= 0 : forever
-      _flash_index = 0;
-      _flash_last_time = millis();
-    }
-
-    void flashStop() {
-      _flash_duration = 0;
-    }
-};
-
-/**
-   Button State
-   @see Button
-*/
-enum ButtonState {
-  NO = 0,
-  SHORT = 1,
-  LONG = 2
 };
 
 /**
@@ -131,9 +81,6 @@ enum ButtonState {
 class Button: public Runnable {
   private:
     const byte _pin;
-    int _state;
-    unsigned long _buttonDownMs;
-    ButtonState _result;
 
   public:
     Button(byte pin) :
@@ -141,45 +88,13 @@ class Button: public Runnable {
     { }
 
     void setup() {
-      pinMode(_pin, INPUT_PULLUP);
-      _state = HIGH;
-      _result = ButtonState::NO;
-    }
-
-    void loop() {
-      _result = ButtonState::NO;
-      int prevState = _state;
-      _state = digitalRead(_pin);
-
-      if (prevState == HIGH && _state == LOW) {
-        _buttonDownMs = millis();
-      } else if (prevState == LOW && _state == HIGH) {
-        if (millis() - _buttonDownMs < 50) {
-          // ignore this for debounce
-        } else if (millis() - _buttonDownMs < 500) {
-          // short click
-          _result = ButtonState::SHORT;
-        } else {
-          // long click
-          _result = ButtonState::LONG;
-        }
-      }
-    }
-
-    ButtonState getState() {
-      return _result;
+      pinMode(_pin, INPUT);
     }
 
     bool isClicked() {
-      return _result != ButtonState::NO;
-    }
-
-    bool isShortClick() {
-      return _result == ButtonState::SHORT;
-    }
-
-    bool isLongClick() {
-      return _result == ButtonState::LONG;
+      bool r = digitalRead(_pin) == HIGH;
+      delay(200);
+      return r;
     }
 };
 
@@ -257,9 +172,10 @@ class ProximityCheck: public Runnable {
 
     void setup() {}
 
-    void loop() {
+    ProximityCheckState getState() {
       int i = 0;
       bool result = true;
+      ProximityCheckState _result;
 
       while (result && i < _STEPS_LEN) {
         bool state = _STEPS[i];
@@ -283,9 +199,7 @@ class ProximityCheck: public Runnable {
       } else {
         _result = ProximityCheckState::PROXIMITY; // Proximity
       }
-    }
 
-    byte getState() {
       return _result;
     }
 
@@ -309,8 +223,6 @@ void setup() {
 }
 
 void loop() {
-  Runnable::loopAll();
-
   //  if (x) {
   //    ledState.flash(500, 0);
   //    x = false;
@@ -342,18 +254,7 @@ void loop() {
     }
   }
 
-  //  switch (btn.getState()) {
-  //    case ButtonState::NO:
-  //      break;
-  //    case ButtonState::SHORT:
-  //      ledState.invert();
-  //      break;
-  //    case ButtonState::LONG:
-  //      ledErr.invert();
-  //      break;
-  //  }
-
-  //  if (btn.isClicked()) {
-  //    ledState.invert();
-  //  }
+//    if (btn.isClicked()) {
+//      ledState.invert();
+//    }
 }
