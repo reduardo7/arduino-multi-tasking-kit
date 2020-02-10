@@ -305,22 +305,24 @@ class LedDisplay: public Runnable {
     const Led _l5;
     const Led _l6;
     const Led _l7;
-    
+    const Led _lp;
+
   public:
-    LedDisplay(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7) :
+    LedDisplay(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7, byte lp) :
       _l1(l1),
       _l2(l2),
       _l3(l3),
       _l4(l4),
       _l5(l5),
       _l6(l6),
-      _l7(l7)
+      _l7(l7),
+      _lp(lp)
     { }
-    
+
     void setup() {
       this->off();
     }
-    
+
     void loop() {}
 
     void off() {
@@ -331,9 +333,22 @@ class LedDisplay: public Runnable {
       _l5.on();
       _l6.on();
       _l7.on();
+      this->setPoint(false);
     }
 
-    void set(byte n) {
+    void setPoint(bool point) {
+      if (point) {
+        // Point on
+        _lp.off();
+      } else {
+        // Point off
+        _lp.on();
+      }
+    }
+
+    void set(byte n, bool point = false) {
+      this->setPoint(point);
+      
       switch (n) {
         case 0:
           _l1.on();
@@ -426,7 +441,10 @@ class LedDisplay: public Runnable {
           _l7.off();
           break;
         default:
+          // Invalid!
           this->off();
+          // Point on
+          this->setPoint(true);
           break;
       }
     }
@@ -439,7 +457,7 @@ class LedDisplay: public Runnable {
 //ProximityCheck pc(2, A0);
 //Button btn(3);
 
-LedDisplay disp(11, 10, 9, 8, 7, 6, 5);
+LedDisplay disp(11, 10, 9, 8, 7, 6, 5, 4);
 Button btnAdd(2);
 Button btnMin(3);
 byte num = 0;
@@ -463,25 +481,25 @@ void loop() {
   //    ledErr.off();
   //  }
 
-//  if (btn.isClicked()) {
-//    ledErr.off();
-//    pc.calibrate();
-//  } else {
-//    switch (pc.getState()) {
-//      case ProximityCheckState::PROXIMITY:
-//        ledErr.off();
-//        ledState.on();
-//        break;
-//      case ProximityCheckState::NO_PROXIMITY:
-//        ledErr.off();
-//        ledState.off();
-//        break;
-//      case ProximityCheckState::ERROR_FIRST_CHECK:
-//        ledState.off();
-//        ledErr.on();
-//        break;
-//    }
-//  }
+  //  if (btn.isClicked()) {
+  //    ledErr.off();
+  //    pc.calibrate();
+  //  } else {
+  //    switch (pc.getState()) {
+  //      case ProximityCheckState::PROXIMITY:
+  //        ledErr.off();
+  //        ledState.on();
+  //        break;
+  //      case ProximityCheckState::NO_PROXIMITY:
+  //        ledErr.off();
+  //        ledState.off();
+  //        break;
+  //      case ProximityCheckState::ERROR_FIRST_CHECK:
+  //        ledState.off();
+  //        ledErr.on();
+  //        break;
+  //    }
+  //  }
 
   if (btnAdd.isClicked()) {
     num++;
