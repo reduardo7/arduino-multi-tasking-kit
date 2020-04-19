@@ -14,7 +14,7 @@ void Timer::loop() {
     this->start();
   }
 
-  if (this->_start > 0) {
+  if (this->_start > 0 && this->_time) {
     unsigned long current = millis();
     unsigned long to = this->_start + this->_time;
 
@@ -36,14 +36,14 @@ Timer* Timer::add(unsigned long time) {
   return this;
 }
 
-Timer* Timer::start() {
+Timer* Timer::start(unsigned long time = 0) {
+  if (time > 0) {
+    this->set(time);
+  }
+
   this->_start = millis();
   this->_done = false;
   return this;
-}
-
-Timer* Timer::reset() {
-  return this->start();
 }
 
 Timer* Timer::stop() {
@@ -54,10 +54,6 @@ Timer* Timer::stop() {
 
 bool Timer::onFinish() {
   const bool d = this->_done;
-
-  if (d) {
-  }
-
   this->_done = false;
   return d;
 }

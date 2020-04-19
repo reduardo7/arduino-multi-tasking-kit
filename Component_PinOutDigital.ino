@@ -11,15 +11,19 @@ void PinOutDigital::setup() {
 
 void PinOutDigital::loop() {
   if (this->isFlashing()) {
-    unsigned long m = millis();
+    if (this->_flash_times > 0) {
+      this->_flash_index++;
+    }
 
-    if ((m - this->_flash_last_time) >= this->_flash_duration) {
-      this->invert();
-      this->_flash_last_time = m;
+    if (this->isFlashing()) { // Check if is the last flash
+      unsigned long current = millis();
 
-      if (this->_flash_times > 0) {
-        this->_flash_index++;
+      if ((current - this->_flash_last_time) >= this->_flash_duration) {
+        this->invert();
+        this->_flash_last_time = current;
       }
+    } else {
+      this->off();
     }
   }
 }
@@ -70,6 +74,7 @@ void PinOutDigital::flash(unsigned int duration, unsigned int times = 0) {
   this->_flash_times = times * 2; // One time on, one time off | times == 0 : forever
   this->_flash_index = 0;
   this->_flash_last_time = millis();
+  this->on();
 }
 
 void PinOutDigital::flashStop() {

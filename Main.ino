@@ -4,6 +4,7 @@
 #include "Component_LedDisplay8.h"
 #include "Component_Button.h"
 #include "Lib_Timer.h"
+#include "Lib_Interval.h"
 
 void Main::setup() {
 }
@@ -120,33 +121,62 @@ void Main::setup() {
 
 /* **************************************************************************** */
 
+// PinOutDigital l1(9);
+// PinOutDigital l2(10);
+// PinOutDigital l3(11);
+// Timer timer(5000);
+// Button btn(2);
+
+// void Main::loop() {
+//   if (timer.onFinish()) {
+//     l1.on();
+//   }
+
+//   if (timer.isFinished()) {
+//     l3.flashStop();
+
+//     if (!l2.isFlashing()) {
+//       l2.flash(100);
+//     }
+//   } else {
+//     l2.flashStop();
+
+//     if (!l3.isFlashing()) {
+//       l3.flash(500);
+//     }
+//   }
+
+//   if (btn.isClicked()) {
+//     timer.start();
+//   }
+// }
+
+/* **************************************************************************** */
+
+
 PinOutDigital l1(9);
 PinOutDigital l2(10);
 PinOutDigital l3(11);
-Timer timer(5000);
+Interval interval(500);
 Button btn(2);
 
 void Main::loop() {
-  if (timer.onFinish()) {
-    l1.on();
-  }
-
-  if (timer.isFinished()) {
-    l3.flashStop();
-
-    if (!l2.isFlashing()) {
-      l2.flash(100);
-    }
-  } else {
-    l2.flashStop();
-
-    if (!l3.isFlashing()) {
-      l3.flash(500);
-    }
+  if (interval.onStep()) {
+    l1.invert();
   }
 
   if (btn.isClicked()) {
-    timer.start();
+    if (interval.isRunning()) {
+      interval.stop();
+      // l2.flash(500, 3);
+      l3.off();
+      l2.on();
+    } else {
+      interval.start();
+      // l2.flash(500, 5);
+      l2.off();
+      l3.on();
+    }
   }
 }
 

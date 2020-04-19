@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include "App_Runnable.h"
-#include "Component_PinOutDigital.h"
 
 /**
  * Control Pin Out Digital pin.

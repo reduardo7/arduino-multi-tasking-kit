@@ -46,20 +46,13 @@ class Timer: public Runnable {
      * Start timer.
      * When timer time is reached, @onFinish will returns true.
      *
+     * @param time Time in milliseconds. 0 to ignore @set.
      * @return This instance.
-     * @see reset
+     * @see set
      * @see stop
      * @see onFinish
      */
-    Timer* start();
-
-    /**
-     * Alias of @start.
-     *
-     * @return This instance.
-     * @see start
-     */
-    Timer* reset();
+    Timer* start(unsigned long time = 0);
 
     /**
      * Stop working timer without running @onFinish.
@@ -74,6 +67,9 @@ class Timer: public Runnable {
      * Returns true only once when the time is reached.
      *
      * @return True on time reached.
+     * @see start
+     * @see stop
+     * @see isFinished
      */
     bool onFinish();
 
