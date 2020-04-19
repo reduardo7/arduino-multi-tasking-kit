@@ -16,8 +16,13 @@ static void Runnable::setupAll() {
 }
 
 static void Runnable::loopAll() {
-  for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
-    r->loop();
+  unsigned long current = millis();
+
+  // Wait until `millis()` has a value
+  if (current) {
+    for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
+      r->loop();
+    }
   }
 }
 

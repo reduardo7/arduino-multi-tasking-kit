@@ -42,6 +42,14 @@ void PinOutDigital::invert() {
 }
 
 void PinOutDigital::set(uint8_t state) {
+  if (state == LOW) {
+    this->off();
+  } else {
+    this->on();
+  }
+}
+
+void PinOutDigital::set(bool state) {
   if (state) {
     this->on();
   } else {
@@ -57,7 +65,7 @@ bool PinOutDigital::isHigh() {
   return this->get() == HIGH;
 }
 
-void PinOutDigital::flash(unsigned int duration, unsigned int times) {
+void PinOutDigital::flash(unsigned int duration, unsigned int times = 0) {
   this->_flash_duration = duration;
   this->_flash_times = times * 2; // One time on, one time off | times == 0 : forever
   this->_flash_index = 0;

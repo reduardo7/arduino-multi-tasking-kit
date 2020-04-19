@@ -21,7 +21,7 @@ class PinOutDigital: public Runnable {
     unsigned long _flash_time = 0;
     unsigned long _flash_last_time = 0;
 
-protected:
+  protected:
     void setup();
     void loop();
 
@@ -59,6 +59,13 @@ protected:
     void set(uint8_t state);
 
     /**
+     * Set output state.
+     *
+     * @param state State to set true=HIGH or false=LOW.
+     */
+    void set(bool state);
+
+    /**
      * Get output state.
      *
      * @return Current output state.
@@ -81,7 +88,7 @@ protected:
      * @see flashStop
      * @see isFlashing
      */
-    void flash(unsigned int duration, unsigned int times);
+    void flash(unsigned int duration, unsigned int times = 0);
 
     /**
      * Stop flashing.

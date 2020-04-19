@@ -3,6 +3,7 @@
 #include "Component_ProximityCheck.h"
 #include "Component_LedDisplay8.h"
 #include "Component_Button.h"
+#include "Lib_Timer.h"
 
 void Main::setup() {
 }
@@ -116,5 +117,37 @@ void Main::setup() {
 //     l4.off();
 //   }
 // }
+
+/* **************************************************************************** */
+
+PinOutDigital l1(9);
+PinOutDigital l2(10);
+PinOutDigital l3(11);
+Timer timer(5000);
+Button btn(2);
+
+void Main::loop() {
+  if (timer.onFinish()) {
+    l1.on();
+  }
+
+  if (timer.isFinished()) {
+    l3.flashStop();
+
+    if (!l2.isFlashing()) {
+      l2.flash(100);
+    }
+  } else {
+    l2.flashStop();
+
+    if (!l3.isFlashing()) {
+      l3.flash(500);
+    }
+  }
+
+  if (btn.isClicked()) {
+    timer.start();
+  }
+}
 
 /* **************************************************************************** */
