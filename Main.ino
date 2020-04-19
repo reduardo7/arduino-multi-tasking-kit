@@ -33,9 +33,6 @@ void Main::setup() {
 // ProximityCheck pc(2, A0);
 // Button btn(3);
 
-// void Main::setup() {
-// }
-
 // void Main::loop() {
 //  if (btn.isClicked()) {
 //    ledErr.off();
@@ -63,7 +60,6 @@ void Main::setup() {
 // PinOutDigital ledState(2);
 // PinOutDigital ledErr(3);
 // Button btn(5);
-// bool x = true;
 
 // void Main::setup() {
 //   ledErr.flash(500, 10);
@@ -81,6 +77,7 @@ void Main::setup() {
 /* **************************************************************************** */
 
 // PinOutDigital led(13);
+// PinOutDigital led2(4);
 
 // void Main::setup() {
 //   led.flash(500, 5);
@@ -88,36 +85,36 @@ void Main::setup() {
 
 // void Main::loop() {
 //   if (!led.isFlashing()) {
-//     led.off();
+//     led2.on();
 //   }
 // }
 
 /* **************************************************************************** */
 
-PinOutDigital l1(9);
-PinOutDigital l2(10);
-PinOutDigital l3(11);
-PinOutDigital l4(LED_BUILTIN);
-Button btn(2);
+// PinOutDigital l1(9);
+// PinOutDigital l2(10);
+// PinOutDigital l3(11);
+// PinOutDigital l4(LED_BUILTIN);
+// Button btn(2);
 
-void Main::loop() {
-  if (btn.isClicked()) {
-    l1.invert();
-  }
+// void Main::loop() {
+//   if (btn.isClicked()) {
+//     l1.invert();
+//   }
 
-  if (btn.isLongClick()) {
-    l2.invert();
-  }
+//   if (btn.isLongClick()) {
+//     l2.invert();
+//   }
 
-  if (btn.isShortClick()) {
-    l3.invert();
-  }
+//   if (btn.isShortClick()) {
+//     l3.invert();
+//   }
 
-  if (btn.isDown()) {
-    l4.on();
-  } else {
-    l4.off();
-  }
-}
+//   if (btn.isDown()) {
+//     l4.on();
+//   } else {
+//     l4.off();
+//   }
+// }
 
 /* **************************************************************************** */
