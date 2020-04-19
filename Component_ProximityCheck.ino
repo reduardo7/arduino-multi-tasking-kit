@@ -6,7 +6,7 @@ unsigned long arrayLen(T *x) {
   return sizeof(x) / sizeof(x[0]);
 }
 
-byte ProximityCheck::_checkInputState(bool state) {
+int ProximityCheck::_checkInputState(bool state) {
   this->_led.set(state);
   delay(50);
   return analogRead(this->_apin_in);

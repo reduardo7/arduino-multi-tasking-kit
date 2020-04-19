@@ -3,16 +3,7 @@
 
 #include <Arduino.h>
 #include "App_Runnable.h"
-
-/**
-   Button State
-   @see Button
-*/
-enum ButtonState {
-  NO = 0,
-  SHORT = 1,
-  LONG = 2
-};
+#include "Lib_ButtonState.h"
 
 /**
    @see ButtonState
@@ -35,6 +26,7 @@ class Button: public Runnable {
     bool isClicked();
     bool isShortClick();
     bool isLongClick();
+    bool isDown();
 };
 
 #endif

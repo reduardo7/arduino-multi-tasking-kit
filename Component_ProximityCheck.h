@@ -39,7 +39,7 @@ class ProximityCheck: public Runnable {
     ProximityCheckState _result = ProximityCheckState::NO_PROXIMITY;
 
     int _prox = 800;
-    byte _checkInputState(bool state);
+    int _checkInputState(bool state);
     int _calibrateMin();
     int _calibrateMax();
 

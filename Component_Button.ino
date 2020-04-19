@@ -2,7 +2,9 @@
 
 Button::Button(byte pin) :
   _pin(pin)
-{ }
+{
+  this->_buttonDownMs = 0;
+}
 
 void Button::setup() {
   pinMode(this->_pin, INPUT_PULLUP);
@@ -27,6 +29,8 @@ void Button::loop() {
       // long click
       this->_result = ButtonState::LONG;
     }
+
+    this->_buttonDownMs = 0;
   }
 }
 
@@ -44,6 +48,10 @@ bool Button::isShortClick() {
 
 bool Button::isLongClick() {
   return this->_result == ButtonState::LONG;
+}
+
+bool Button::isDown() {
+  return this->_buttonDownMs > 0;
 }
 
 /*

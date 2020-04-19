@@ -1,6 +1,8 @@
 #ifndef LIB_APP_RUNNABLE_H
 #define LIB_APP_RUNNABLE_H
 
+#include <Arduino.h>
+
 class Runnable {
   private:
     static Runnable *headRunnable;

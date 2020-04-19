@@ -10,6 +10,8 @@ Runnable::Runnable() {
 }
 
 static void Runnable::setupAll() {
+  Serial.begin(9600);
+  
   for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
     r->setup();
   }
