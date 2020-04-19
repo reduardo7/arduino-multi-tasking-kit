@@ -1,7 +1,6 @@
-#include "Component_LedDisplay.h"
-#include "Component_Led.h"
+#include "Component_LedDisplay8.h"
 
-LedDisplay::LedDisplay(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7, byte lp) :
+LedDisplay8::LedDisplay8(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7, byte lp) :
   _l1(l1),
   _l2(l2),
   _l3(l3),
@@ -12,13 +11,13 @@ LedDisplay::LedDisplay(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byt
   _lp(lp)
 { }
 
-void LedDisplay::setup() {
+void LedDisplay8::setup() {
   this->off();
 }
 
-void LedDisplay::loop() {}
+void LedDisplay8::loop() {}
 
-void LedDisplay::off() {
+void LedDisplay8::off() {
   this->_l1.on();
   this->_l2.on();
   this->_l3.on();
@@ -29,7 +28,7 @@ void LedDisplay::off() {
   this->setPoint(false);
 }
 
-void LedDisplay::setPoint(bool point) {
+void LedDisplay8::setPoint(bool point) {
   if (point) {
     // Point on
     this->_lp.off();
@@ -39,7 +38,7 @@ void LedDisplay::setPoint(bool point) {
   }
 }
 
-void LedDisplay::set(byte n, bool point = false) {
+void LedDisplay8::set(byte n, bool point = false) {
   this->setPoint(point);
 
   switch (n) {
@@ -145,7 +144,7 @@ void LedDisplay::set(byte n, bool point = false) {
 /*
   # Code Example:
 
-  LedDisplay disp(11, 10, 9, 8, 7, 6, 5, 4);
+  LedDisplay8 disp(11, 10, 9, 8, 7, 6, 5, 4);
   byte num = 0;
 
   void setup() {

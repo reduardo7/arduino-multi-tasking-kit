@@ -1,5 +1,4 @@
 #include "Component_ProximityCheck.h"
-#include "Component_Led.h"
 
 template <typename T>
 unsigned long arrayLen(T *x) {

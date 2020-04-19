@@ -1,16 +1,16 @@
-#ifndef LIB_COMPONENT_LED
-#define LIB_COMPONENT_LED
+#ifndef LIB_COMPONENT_PIN_OUT_DIGITAL
+#define LIB_COMPONENT_PIN_OUT_DIGITAL
 
 #include <Arduino.h>
 #include "App_Runnable.h"
-#include "Component_Led.h"
+#include "Component_PinOutDigital.h"
 
 /**
    @connection
     {pin} <> [Led +]
     (-) <> [Led -]
 */
-class Led: public Runnable {
+class PinOutDigital: public Runnable {
   private:
     const byte _pin;
     unsigned int _flash_duration = -1;
@@ -20,7 +20,7 @@ class Led: public Runnable {
     unsigned long _flash_last_time = 0;
 
   public:
-    Led(byte pin);
+    PinOutDigital(byte pin);
     void setup();
     void loop();
     bool isFlashing();

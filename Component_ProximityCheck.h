@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "App_Runnable.h"
+#include "Component_PinOutDigital.h"
 
 /**
    Proximity Check State.
@@ -26,7 +27,7 @@ enum ProximityCheckState {
 */
 class ProximityCheck: public Runnable {
   private:
-    const Led _led;
+    const PinOutDigital _led;
     const byte _apin_in;
 
     // First should be LOW, to check external light
