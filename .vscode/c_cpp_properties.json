@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:\\Users\\Eduardo\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\**",
+                "C:\\Users\\Eduardo\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.2\\**",
+                "C:\\Users\\Eduardo\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
+                "C:\\Users\\Eduardo\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.6.3\\**"
+            ],
+            "forcedInclude": [
+                "C:\\Users\\Eduardo\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.2\\cores\\arduino\\Arduino.h"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "defines": [
+                "USBCON"
+            ]
+        }
+    ],
+    "version": 4
+}
