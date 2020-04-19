@@ -1,6 +1,6 @@
 #include "Component_PinOutDigital.h"
 
-PinOutDigital::PinOutDigital(byte pin):
+PinOutDigital::PinOutDigital(uint8_t pin):
   _pin(pin)
 {}
 
@@ -38,10 +38,10 @@ void PinOutDigital::off() {
 }
 
 void PinOutDigital::invert() {
-  this->set(!this->getState());
+  this->set(!this->get());
 }
 
-void PinOutDigital::set(bool state) {
+void PinOutDigital::set(uint8_t state) {
   if (state) {
     this->on();
   } else {
@@ -49,13 +49,17 @@ void PinOutDigital::set(bool state) {
   }
 }
 
-bool PinOutDigital::getState() {
-  return digitalRead(this->_pin) == HIGH;
+uint8_t PinOutDigital::get() {
+  return digitalRead(this->_pin);
+}
+
+bool PinOutDigital::isHigh() {
+  return this->get() == HIGH;
 }
 
 void PinOutDigital::flash(unsigned int duration, unsigned int times) {
   this->_flash_duration = duration;
-  this->_flash_times = times * 2; // One time on, one time off | times <= 0 : forever
+  this->_flash_times = times * 2; // One time on, one time off | times == 0 : forever
   this->_flash_index = 0;
   this->_flash_last_time = millis();
 }
@@ -63,26 +67,3 @@ void PinOutDigital::flash(unsigned int duration, unsigned int times) {
 void PinOutDigital::flashStop() {
   this->_flash_duration = 0;
 }
-
-/*
-  # Code Example:
-
-  Led ledState(13);
-  Led ledErr(12);
-
-  void setup() {
-    Runnable::setupAll();
-    ledErr.flash(500, 10);
-  }
-
-  void loop() {
-    Runnable::loopAll();
-
-    ledState.off();
-    delay(1000);
-    ledState.on();
-    delay(1000);
-    ledState.invert();
-    delay(1000);
-  }
-*/

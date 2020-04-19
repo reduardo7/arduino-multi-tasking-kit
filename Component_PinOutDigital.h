@@ -6,31 +6,99 @@
 #include "Component_PinOutDigital.h"
 
 /**
-   @connection
-    {pin} <> [Led +]
-    (-) <> [Led -]
-*/
+ * Control Pin Out Digital pin.
+ *
+ * @note Connection:
+ *  {pin} <> [Led +]
+ *  (-) <> [Led -]
+ */
 class PinOutDigital: public Runnable {
   private:
-    const byte _pin;
+    const uint8_t _pin;
     unsigned int _flash_duration = -1;
     unsigned int _flash_times = -1;
     unsigned int _flash_index = -1;
     unsigned long _flash_time = 0;
     unsigned long _flash_last_time = 0;
 
-  public:
-    PinOutDigital(byte pin);
+protected:
     void setup();
     void loop();
-    bool isFlashing();
+
+  public:
+    /**
+     * @param pin Board digital pin reference.
+     */
+    PinOutDigital(uint8_t pin);
+
+    /**
+     * Set output with 1/HIGH.
+     */
     void on();
+
+    /**
+     * Set output with 0/LOW.
+     */
     void off();
+
+    /**
+     * Invert output state.
+     * If output is 0/LOW then set 1/HIGH, else set 0/LOW.
+     *
+     * @see on
+     * @see off
+     * @see set
+     */
     void invert();
-    void set(bool state);
-    bool getState();
+
+    /**
+     * Set output state.
+     *
+     * @param state State to set 1/HIGH or 0/LOW.
+     */
+    void set(uint8_t state);
+
+    /**
+     * Get output state.
+     *
+     * @return Current output state.
+     */
+    uint8_t get();
+
+    /**
+     * Get if output state is HIGH.
+     *
+     * @return True if state is HIGH.
+     * @see getState
+     */
+    bool isHigh();
+
+    /**
+     * Start flashing.
+     *
+     * @param duration HIHT and LOW states time in milliseconds.
+     * @param times Repeat times. Set 0 to flash forever.
+     * @see flashStop
+     * @see isFlashing
+     */
     void flash(unsigned int duration, unsigned int times);
+
+    /**
+     * Stop flashing.
+     *
+     * @see flash
+     * @see isFlashing
+     */
     void flashStop();
+
+    /**
+     * Check if the output is flashing.
+     *
+     * @return True if is flashing.
+     * @see flash
+     * @see flashStop
+     */
+    bool isFlashing();
 };
 
 #endif

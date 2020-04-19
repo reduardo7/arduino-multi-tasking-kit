@@ -1,6 +1,6 @@
 #include "Component_Button.h"
 
-Button::Button(byte pin) :
+Button::Button(uint8_t pin) :
   _pin(pin)
 {
   this->_buttonDownMs = 0;
@@ -34,10 +34,6 @@ void Button::loop() {
   }
 }
 
-ButtonState Button::getState() {
-  return this->_result;
-}
-
 bool Button::isClicked() {
   return this->_result != ButtonState::NO;
 }
@@ -53,33 +49,3 @@ bool Button::isLongClick() {
 bool Button::isDown() {
   return this->_buttonDownMs > 0;
 }
-
-/*
-  # Code Example:
-
-  Button btn(3);
-
-  void setup() {
-    Runnable::setupAll();
-  }
-
-  void loop() {
-    Runnable::loopAll();
-
-    switch (btn.getState()) {
-      case ButtonState::NO:
-        // ...
-        break;
-      case ButtonState::SHORT:
-        // ...
-        break;
-      case ButtonState::LONG:
-        // ...
-        break;
-    }
-
-    if (btn.isClicked()) {
-      // ...
-    }
-  }
-*/

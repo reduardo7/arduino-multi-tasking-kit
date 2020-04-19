@@ -44,10 +44,12 @@ class ProximityCheck: public Runnable {
     int _calibrateMin();
     int _calibrateMax();
 
-  public:
-    ProximityCheck(byte led_pin, byte apin_in);
+  protected:
     void setup();
     void loop();
+
+  public:
+    ProximityCheck(byte led_pin, byte apin_in);
     ProximityCheckState getState();
     void calibrate();
 };

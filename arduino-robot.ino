@@ -2,9 +2,10 @@
 
 void setup() {
   Serial.begin(9600);
+
   Runnable::setupAll();
   Main::setup();
-  Serial.println('Ready');
+  Serial.println("Ready");
 }
 
 void loop() {

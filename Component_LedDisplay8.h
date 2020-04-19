@@ -16,10 +16,12 @@ class LedDisplay8: public Runnable {
     const PinOutDigital _l7;
     const PinOutDigital _lp;
 
-  public:
-    LedDisplay8(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7, byte lp);
+  protected:
     void setup();
     void loop();
+
+  public:
+    LedDisplay8(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7, byte lp);
     void off();
     void setPoint(bool point);
     void set(byte n, bool point = false);

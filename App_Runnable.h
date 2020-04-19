@@ -8,10 +8,12 @@ class Runnable {
     static Runnable *headRunnable;
     Runnable *nextRunnable;
 
-  public:
-    Runnable();
+  protected:
     virtual void setup();
     virtual void loop();
+
+  public:
+    Runnable();
     static void setupAll();
     static void loopAll();
 };
