@@ -1,7 +1,8 @@
 #include "Component_PinOutDigital.h"
 
 PinOutDigital::PinOutDigital(uint8_t pin):
-  _pin(pin)
+  _pin(pin),
+  _interval()
 {}
 
 void PinOutDigital::setup() {
@@ -10,27 +11,9 @@ void PinOutDigital::setup() {
 }
 
 void PinOutDigital::loop() {
-  if (this->isFlashing()) {
-    if (this->_flash_times > 0) {
-      this->_flash_index++;
-    }
-
-    if (this->isFlashing()) { // Check if is the last flash
-      unsigned long current = millis();
-
-      if ((current - this->_flash_last_time) >= this->_flash_duration) {
-        this->invert();
-        this->_flash_last_time = current;
-      }
-    } else {
-      this->off();
-    }
+  if (this->_interval.onStep()) {
+    this->invert();
   }
-}
-
-bool PinOutDigital::isFlashing() {
-  return (this->_flash_times <= 0 && this->_flash_duration > 0)
-    || (this->_flash_index >= 0 && this->_flash_index < this->_flash_times);
 }
 
 void PinOutDigital::on() {
@@ -69,14 +52,15 @@ bool PinOutDigital::isHigh() {
   return this->get() == HIGH;
 }
 
-void PinOutDigital::flash(unsigned int duration, unsigned int times = 0) {
-  this->_flash_duration = duration;
-  this->_flash_times = times * 2; // One time on, one time off | times == 0 : forever
-  this->_flash_index = 0;
-  this->_flash_last_time = millis();
-  this->on();
+void PinOutDigital::flash(unsigned long duration, unsigned int times = 0) {
+  this->_interval.start(duration, times * 2); // One time on, one time off | times == 0 : forever
+  this->off();
+}
+
+bool PinOutDigital::isFlashing() {
+  return this->_interval.isRunning();
 }
 
 void PinOutDigital::flashStop() {
-  this->_flash_duration = 0;
+  this->_interval.stop();
 }

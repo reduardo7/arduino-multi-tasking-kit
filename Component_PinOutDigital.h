@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "App_Runnable.h"
+#include "Lib_Interval.h"
 
 /**
  * Control Pin Out Digital pin.
@@ -14,11 +15,7 @@
 class PinOutDigital: public Runnable {
   private:
     const uint8_t _pin;
-    unsigned int _flash_duration = -1;
-    unsigned int _flash_times = -1;
-    unsigned int _flash_index = -1;
-    unsigned long _flash_time = 0;
-    unsigned long _flash_last_time = 0;
+    const Interval _interval;
 
   protected:
     void setup();
@@ -87,7 +84,7 @@ class PinOutDigital: public Runnable {
      * @see flashStop
      * @see isFlashing
      */
-    void flash(unsigned int duration, unsigned int times = 0);
+    void flash(unsigned long duration, unsigned int times = 0);
 
     /**
      * Stop flashing.
