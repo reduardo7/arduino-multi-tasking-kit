@@ -15,6 +15,21 @@
             "defines": [
                 "USBCON"
             ]
+        },
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/**",
+                "/Applications/Arduino.app/Contents/Java/tools/**",
+                "/Users/ecuomo/Library/Arduino15/packages/esp8266/tools/**",
+                "/Users/ecuomo/Library/Arduino15/packages/esp8266/hardware/esp8266/2.6.3/**"
+            ],
+            "forcedInclude": [
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/Arduino.h"
+            ],
+            "defines": [
+                "USBCON"
+            ]
         }
     ],
     "version": 4

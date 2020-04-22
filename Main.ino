@@ -168,11 +168,11 @@ void Main::loop() {
   if (btn.isClicked()) {
     if (interval.isRunning()) {
       interval.stop();
-      l3.flash(100, 1);
+      l3.flash(100, 2);
       l2.off();
     } else {
       interval.start();
-      l2.flash(100, 2);
+      l2.flash(100, 1);
       l3.off();
     }
   }
