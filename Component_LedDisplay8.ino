@@ -1,14 +1,23 @@
 #include "Component_LedDisplay8.h"
 
-LedDisplay8::LedDisplay8(byte l1, byte l2, byte l3, byte l4, byte l5, byte l6, byte l7, byte lp) :
-  _l1(l1),
-  _l2(l2),
-  _l3(l3),
-  _l4(l4),
-  _l5(l5),
-  _l6(l6),
-  _l7(l7),
-  _lp(lp)
+LedDisplay8::LedDisplay8(
+  uint8_t pin1,
+  uint8_t pin2,
+  uint8_t pin3,
+  uint8_t pin4,
+  uint8_t pin5,
+  uint8_t pin6,
+  uint8_t pin7,
+  uint8_t pin8_dot
+) :
+  _pin1(pin1),
+  _pin2(pin2),
+  _pin3(pin3),
+  _pin4(pin4),
+  _pin5(pin5),
+  _pin6(pin6),
+  _pin7(pin7),
+  _pin8_dot(pin8_dot)
 { }
 
 void LedDisplay8::setup() {
@@ -17,120 +26,121 @@ void LedDisplay8::setup() {
 
 void LedDisplay8::loop() {}
 
-void LedDisplay8::off() {
-  this->_l1.on();
-  this->_l2.on();
-  this->_l3.on();
-  this->_l4.on();
-  this->_l5.on();
-  this->_l6.on();
-  this->_l7.on();
-  this->setPoint(false);
+LedDisplay8 LedDisplay8::off() {
+  this->_pin1.on();
+  this->_pin2.on();
+  this->_pin3.on();
+  this->_pin4.on();
+  this->_pin5.on();
+  this->_pin6.on();
+  this->_pin7.on();
+  return this->setPoint(false);
 }
 
-void LedDisplay8::setPoint(bool point) {
+LedDisplay8 LedDisplay8::setPoint(bool point) {
   if (point) {
     // Point on
-    this->_lp.off();
+    this->_pin8_dot.off();
   } else {
     // Point off
-    this->_lp.on();
+    this->_pin8_dot.on();
   }
+  return this;
 }
 
-void LedDisplay8::set(byte n, bool point = false) {
+LedDisplay8 LedDisplay8::set(uint8_t n, bool point = false) {
   this->setPoint(point);
 
   switch (n) {
     case 0:
-      this->_l1.on();
-      this->_l2.off();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.off();
-      this->_l6.off();
-      this->_l7.off();
+      this->_pin1.on();
+      this->_pin2.off();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.off();
+      this->_pin6.off();
+      this->_pin7.off();
       break;
     case 1:
-      this->_l1.on();
-      this->_l2.on();
-      this->_l3.on();
-      this->_l4.off();
-      this->_l5.on();
-      this->_l6.on();
-      this->_l7.off();
+      this->_pin1.on();
+      this->_pin2.on();
+      this->_pin3.on();
+      this->_pin4.off();
+      this->_pin5.on();
+      this->_pin6.on();
+      this->_pin7.off();
       break;
     case 2:
-      this->_l1.off();
-      this->_l2.on();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.off();
-      this->_l6.off();
-      this->_l7.on();
+      this->_pin1.off();
+      this->_pin2.on();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.off();
+      this->_pin6.off();
+      this->_pin7.on();
       break;
     case 3:
-      this->_l1.off();
-      this->_l2.on();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.on();
-      this->_l6.off();
-      this->_l7.off();
+      this->_pin1.off();
+      this->_pin2.on();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.on();
+      this->_pin6.off();
+      this->_pin7.off();
       break;
     case 4:
-      this->_l1.off();
-      this->_l2.off();
-      this->_l3.on();
-      this->_l4.off();
-      this->_l5.on();
-      this->_l6.on();
-      this->_l7.off();
+      this->_pin1.off();
+      this->_pin2.off();
+      this->_pin3.on();
+      this->_pin4.off();
+      this->_pin5.on();
+      this->_pin6.on();
+      this->_pin7.off();
       break;
     case 5:
-      this->_l1.off();
-      this->_l2.off();
-      this->_l3.off();
-      this->_l4.on();
-      this->_l5.on();
-      this->_l6.off();
-      this->_l7.off();
+      this->_pin1.off();
+      this->_pin2.off();
+      this->_pin3.off();
+      this->_pin4.on();
+      this->_pin5.on();
+      this->_pin6.off();
+      this->_pin7.off();
       break;
     case 6:
-      this->_l1.off();
-      this->_l2.on();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.off();
-      this->_l6.off();
-      this->_l7.off();
+      this->_pin1.off();
+      this->_pin2.on();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.off();
+      this->_pin6.off();
+      this->_pin7.off();
       break;
     case 7:
-      this->_l1.on();
-      this->_l2.on();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.on();
-      this->_l6.on();
-      this->_l7.off();
+      this->_pin1.on();
+      this->_pin2.on();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.on();
+      this->_pin6.on();
+      this->_pin7.off();
       break;
     case 8:
-      this->_l1.off();
-      this->_l2.off();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.off();
-      this->_l6.off();
-      this->_l7.off();
+      this->_pin1.off();
+      this->_pin2.off();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.off();
+      this->_pin6.off();
+      this->_pin7.off();
       break;
     case 9:
-      this->_l1.off();
-      this->_l2.off();
-      this->_l3.off();
-      this->_l4.off();
-      this->_l5.on();
-      this->_l6.on();
-      this->_l7.off();
+      this->_pin1.off();
+      this->_pin2.off();
+      this->_pin3.off();
+      this->_pin4.off();
+      this->_pin5.on();
+      this->_pin6.on();
+      this->_pin7.off();
       break;
     default:
       // Invalid!
@@ -139,29 +149,6 @@ void LedDisplay8::set(byte n, bool point = false) {
       this->setPoint(true);
       break;
   }
+
+  return this;
 }
-
-/*
-  # Code Example:
-
-  LedDisplay8 disp(11, 10, 9, 8, 7, 6, 5, 4);
-  byte num = 0;
-
-  void setup() {
-    Runnable::setupAll();
-  }
-
-  void loop() {
-    Runnable::loopAll();
-
-    if (btnAdd.isClicked()) {
-      num++;
-    }
-
-    if (btnMin.isClicked()) {
-      num--;
-    }
-
-    disp.set(num);
-  }
-*/

@@ -53,5 +53,8 @@
         "random": "cpp",
         "*.inc": "cpp",
         "set": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "leds"
+    ]
 }

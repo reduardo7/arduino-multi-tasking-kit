@@ -79,7 +79,7 @@ class PinOutDigital: public Runnable {
     /**
      * Start flashing.
      *
-     * @param duration HIHT and LOW states time in milliseconds.
+     * @param duration HIGHT and LOW states time in milliseconds.
      * @param times Repeat times. Set 0 to flash forever.
      * @see flashStop
      * @see isFlashing
