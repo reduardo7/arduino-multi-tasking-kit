@@ -1,7 +1,6 @@
 #ifndef LIB_COMPONENT_BUTTON
 #define LIB_COMPONENT_BUTTON
 
-#include <Arduino.h>
 #include "App_Runnable.h"
 
 /**
@@ -29,14 +28,43 @@ class Button: public Runnable {
     ButtonState _result;
 
   protected:
-    void setup();
-    void loop();
+    void setup() {
+      pinMode(this->_pin, INPUT_PULLUP);
+      this->_state = HIGH;
+      this->_result = ButtonState::NO;
+    }
+
+    void loop() {
+      this->_result = ButtonState::NO;
+      int prevState = this->_state;
+      this->_state = digitalRead(this->_pin);
+
+      if (prevState == HIGH && this->_state == LOW) {
+        this->_buttonDownMs = millis();
+      } else if (prevState == LOW && this->_state == HIGH) {
+        if (millis() - this->_buttonDownMs < 50) {
+          // ignore this for debounce
+        } else if (millis() - this->_buttonDownMs < 500) {
+          // short click
+          this->_result = ButtonState::SHORT;
+        } else {
+          // long click
+          this->_result = ButtonState::LONG;
+        }
+
+        this->_buttonDownMs = 0;
+      }
+    }
 
   public:
     /**
      * @param pin Board digital pin reference.
      */
-    Button(uint8_t pin);
+    Button(uint8_t pin) :
+      _pin(pin)
+    {
+      this->_buttonDownMs = 0;
+    }
 
     /**
      * Was the Button pressed?
@@ -45,7 +73,9 @@ class Button: public Runnable {
      * @see isShortClick
      * @see isLongClick
      */
-    bool isClicked();
+    bool isClicked() {
+      return this->_result != ButtonState::NO;
+    }
 
     /**
      * Has the button been pressed short?
@@ -54,7 +84,9 @@ class Button: public Runnable {
      * @see isClicked
      * @see isLongClick
      */
-    bool isShortClick();
+    bool isShortClick() {
+      return this->_result == ButtonState::SHORT;
+    }
 
     /**
      * Has the button been pressed long?
@@ -63,14 +95,18 @@ class Button: public Runnable {
      * @see isClicked
      * @see isShortClick
      */
-    bool isLongClick();
+    bool Button::isLongClick() {
+      return this->_result == ButtonState::LONG;
+    }
 
     /**
      * Is the button being pressed?
      *
      * @return True while the button is being pressed.
      */
-    bool isDown();
+    bool isDown() {
+      return this->_buttonDownMs > 0;
+    }
 };
 
 #endif

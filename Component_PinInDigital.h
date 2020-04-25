@@ -1,7 +1,6 @@
 #ifndef LIB_COMPONENT_PIN_IN_DIGITAL
 #define LIB_COMPONENT_PIN_IN_DIGITAL
 
-#include <Arduino.h>
 #include "App_Runnable.h"
 
 /**
@@ -17,21 +16,28 @@ class PinInDigital: public Runnable {
     const uint8_t _pin;
 
   protected:
-    void setup();
-    void loop();
+    void setup() {
+      pinMode(this->_pin, INPUT);
+    }
+
+    void loop() {}
 
   public:
     /**
      * @param pin Board digital pin reference.
      */
-    PinInDigital(uint8_t pin);
+    PinInDigital(uint8_t pin):
+      _pin(pin)
+    {}
 
     /**
      * Get output state.
      *
      * @return Current output state.
      */
-    uint8_t get();
+    uint8_t get() {
+      return digitalRead(this->_pin);
+    }
 
     /**
      * Get if output state is HIGH.
@@ -39,7 +45,9 @@ class PinInDigital: public Runnable {
      * @return True if state is HIGH.
      * @see getState
      */
-    bool isHigh();
+    bool isHigh() {
+      return this->get() == HIGH;
+    }
 };
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef LIB_COMPONENT_LED_DISPLAY8
 #define LIB_COMPONENT_LED_DISPLAY8
 
-#include <Arduino.h>
 #include "App_Runnable.h"
 #include "Component_PinOutDigital.h"
 
@@ -31,8 +30,11 @@ class LedDisplay8: public Runnable {
     const PinOutDigital _pin8_dot;
 
   protected:
-    void setup();
-    void loop();
+    void setup() {
+      this->off();
+    }
+
+    void loop() {}
 
   public:
 
@@ -55,14 +57,32 @@ class LedDisplay8: public Runnable {
       uint8_t pin6,
       uint8_t pin7,
       uint8_t pin8_dot
-    );
+    ) :
+      _pin1(pin1),
+      _pin2(pin2),
+      _pin3(pin3),
+      _pin4(pin4),
+      _pin5(pin5),
+      _pin6(pin6),
+      _pin7(pin7),
+      _pin8_dot(pin8_dot)
+    { }
 
     /**
      * Turn off all leds.
      *
      * @return This instance.
      */
-    LedDisplay8* off();
+    LedDisplay8* off() {
+      this->_pin1.on();
+      this->_pin2.on();
+      this->_pin3.on();
+      this->_pin4.on();
+      this->_pin5.on();
+      this->_pin6.on();
+      this->_pin7.on();
+      return this->setPoint(false);
+    }
 
     /**
      * Set point state.
@@ -70,7 +90,17 @@ class LedDisplay8: public Runnable {
      * @param status Point status. True to turn it on, False to turn it off.
      * @return This instance.
      */
-    LedDisplay8* setPoint(bool status);
+    LedDisplay8* setPoint(bool point) {
+      if (point) {
+        // Point on
+        this->_pin8_dot.off();
+      } else {
+        // Point off
+        this->_pin8_dot.on();
+      }
+
+      return this;
+    }
 
     /**
      * Set display number.
@@ -79,7 +109,110 @@ class LedDisplay8: public Runnable {
      * @param point Point status. True to turn it on, False to turn it off.
      * @return This instance.
      */
-    LedDisplay8* set(uint8_t n, bool point = false);
+    LedDisplay8* set(uint8_t n, bool point = false) {
+      this->setPoint(point);
+
+      switch (n) {
+        case 0:
+          this->_pin1.on();
+          this->_pin2.off();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.off();
+          this->_pin6.off();
+          this->_pin7.off();
+          break;
+        case 1:
+          this->_pin1.on();
+          this->_pin2.on();
+          this->_pin3.on();
+          this->_pin4.off();
+          this->_pin5.on();
+          this->_pin6.on();
+          this->_pin7.off();
+          break;
+        case 2:
+          this->_pin1.off();
+          this->_pin2.on();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.off();
+          this->_pin6.off();
+          this->_pin7.on();
+          break;
+        case 3:
+          this->_pin1.off();
+          this->_pin2.on();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.on();
+          this->_pin6.off();
+          this->_pin7.off();
+          break;
+        case 4:
+          this->_pin1.off();
+          this->_pin2.off();
+          this->_pin3.on();
+          this->_pin4.off();
+          this->_pin5.on();
+          this->_pin6.on();
+          this->_pin7.off();
+          break;
+        case 5:
+          this->_pin1.off();
+          this->_pin2.off();
+          this->_pin3.off();
+          this->_pin4.on();
+          this->_pin5.on();
+          this->_pin6.off();
+          this->_pin7.off();
+          break;
+        case 6:
+          this->_pin1.off();
+          this->_pin2.on();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.off();
+          this->_pin6.off();
+          this->_pin7.off();
+          break;
+        case 7:
+          this->_pin1.on();
+          this->_pin2.on();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.on();
+          this->_pin6.on();
+          this->_pin7.off();
+          break;
+        case 8:
+          this->_pin1.off();
+          this->_pin2.off();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.off();
+          this->_pin6.off();
+          this->_pin7.off();
+          break;
+        case 9:
+          this->_pin1.off();
+          this->_pin2.off();
+          this->_pin3.off();
+          this->_pin4.off();
+          this->_pin5.on();
+          this->_pin6.on();
+          this->_pin7.off();
+          break;
+        default:
+          // Invalid!
+          this->off();
+          // Point on
+          this->setPoint(true);
+          break;
+      }
+
+      return this;
+    }
 };
 
 #endif

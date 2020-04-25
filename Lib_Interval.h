@@ -5,7 +5,7 @@
 
 /**
  * Interval.
-*/
+ */
 class Interval: public Runnable {
   private:
     bool _working = false;
@@ -16,8 +16,32 @@ class Interval: public Runnable {
     unsigned long _start = 0;
 
   protected:
-    void setup();
-    void loop();
+    void setup() {
+      if (this->_time > 0) {
+        this->_working = true;
+      }
+    }
+
+    void loop() {
+      if (
+        this->_working
+        && this->_time
+        && (
+          (this->_limitCount == 0)
+          || (this->_limitCount > this->_count)
+        )
+      ) {
+        unsigned long current = millis();
+        unsigned long to = this->_start + this->_time;
+
+        if (current >= to) {
+          // Interval step
+          this->_count++;
+          this->_start = current;
+          this->_step = true;
+        }
+      }
+    }
 
   public:
     /**
@@ -27,7 +51,10 @@ class Interval: public Runnable {
      * @param time Time in milliseconds.
      * @param count Total times to execute. 0 for infinite loop.
      */
-    Interval(unsigned long time = 0, unsigned int count = 0);
+    Interval(unsigned long time = 0, unsigned int count = 0) :
+      _time(time),
+      _limitCount(count)
+    {}
 
     /**
      * Set interval time.
@@ -35,7 +62,10 @@ class Interval: public Runnable {
      * @param time Time in milliseconds.
      * @return This instance.
      */
-    Interval* setIntervalTime(unsigned long time);
+    Interval* setIntervalTime(unsigned long time) {
+      this->_time = time;
+      return this;
+    }
 
     /**
      * Set interval total times to execute.
@@ -43,7 +73,10 @@ class Interval: public Runnable {
      * @param time Time in milliseconds. 0 for infinite loop.
      * @return This instance.
      */
-    Interval* setIntervalCount(unsigned int count);
+    Interval* setIntervalCount(unsigned int count) {
+      this->_limitCount = count;
+      return this;
+    }
 
     /**
      * Start interval.
@@ -55,7 +88,21 @@ class Interval: public Runnable {
      * @see stop
      * @see onStep
      */
-    Interval* start(unsigned long time = 0, unsigned int count = NULL);
+    Interval* start(unsigned long duration = 0, unsigned int count = NULL) {
+      if (duration > 0) {
+        this->setIntervalTime(duration);
+      }
+
+      if (count != NULL) {
+        this->setIntervalCount(count);
+      }
+
+      this->_start = millis();
+      this->_count = 0;
+      this->_working = true;
+      this->_step = false;
+      return this;
+    }
 
     /**
      * Stop working interval without running @onStep.
@@ -64,7 +111,11 @@ class Interval: public Runnable {
      * @see start
      * @see onStep
      */
-    Interval* stop();
+    Interval* stop() {
+      this->_working = false;
+      this->_step = false;
+      return this;
+    }
 
     /**
      * Returns true only once each interval.
@@ -74,14 +125,20 @@ class Interval: public Runnable {
      * @see stop
      * @see isRunning
      */
-    bool onStep();
+    bool onStep() {
+      const bool s = this->_step;
+      this->_step = false;
+      return s;
+    }
 
     /**
      * Returns true when interval is running.
      *
      * @return True on interval is running.
      */
-    bool isRunning();
+    bool isRunning() {
+      return this->_working;
+    }
 };
 
 #endif

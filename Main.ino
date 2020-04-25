@@ -187,8 +187,8 @@ Button btn1(3);
 Button btn2(4);
 
 void Main::loop() {
-  l1.set(btn1.isDown());
-  l2.set(btn2.isDown());
+  l1.setState(btn1.isDown());
+  l2.setState(btn2.isDown());
 }
 
 /* **************************************************************************** */

@@ -1,7 +1,6 @@
 #ifndef LIB_COMPONENT_PIN_OUT_DIGITAL
 #define LIB_COMPONENT_PIN_OUT_DIGITAL
 
-#include <Arduino.h>
 #include "App_Runnable.h"
 #include "Lib_Interval.h"
 
@@ -18,26 +17,43 @@ class PinOutDigital: public Runnable {
     const Interval _interval;
 
   protected:
-    void setup();
-    void loop();
+    void setup() {
+      pinMode(this->_pin, OUTPUT);
+      this->off();
+    }
+
+    void loop() {
+      if (this->_interval.onStep()) {
+        this->invert();
+      }
+    }
 
   public:
     /**
      * @param pin Board digital pin reference.
      */
-    PinOutDigital(uint8_t pin);
+    PinOutDigital(uint8_t pin):
+      _pin(pin),
+      _interval()
+    {}
 
     /**
      * Set output with 1/HIGH.
      * @return This instance.
      */
-    PinOutDigital* on();
+    PinOutDigital* on() {
+      digitalWrite(this->_pin, HIGH);
+      return this;
+    }
 
     /**
      * Set output with 0/LOW.
      * @return This instance.
      */
-    PinOutDigital* off();
+    PinOutDigital* off() {
+      digitalWrite(this->_pin, LOW);
+      return this;
+    }
 
     /**
      * Invert output state.
@@ -48,7 +64,9 @@ class PinOutDigital: public Runnable {
      * @see off
      * @see set
      */
-    PinOutDigital* invert();
+    PinOutDigital* invert() {
+      return this->setState(!this->get());
+    }
 
     /**
      * Set output state.
@@ -56,7 +74,15 @@ class PinOutDigital: public Runnable {
      * @param state State to set 1/HIGH or 0/LOW.
      * @return This instance.
      */
-    PinOutDigital* set(uint8_t state);
+    PinOutDigital* set(uint8_t state) {
+      if (state == LOW) {
+        this->off();
+      } else {
+        this->on();
+      }
+
+      return this;
+    }
 
     /**
      * Set output state.
@@ -64,14 +90,24 @@ class PinOutDigital: public Runnable {
      * @param state State to set true=HIGH or false=LOW.
      * @return This instance.
      */
-    PinOutDigital* set(bool state);
+    PinOutDigital* setState(bool state) {
+      if (state) {
+        this->on();
+      } else {
+        this->off();
+      }
+
+      return this;
+    }
 
     /**
      * Get output state.
      *
      * @return Current output state.
      */
-    uint8_t get();
+    uint8_t get() {
+      return digitalRead(this->_pin);
+    }
 
     /**
      * Get if output state is HIGH.
@@ -79,7 +115,9 @@ class PinOutDigital: public Runnable {
      * @return True if state is HIGH.
      * @see getState
      */
-    bool isHigh();
+    bool isHigh() {
+      return this->get() == HIGH;
+    }
 
     /**
      * Start flashing.
@@ -90,7 +128,10 @@ class PinOutDigital: public Runnable {
      * @see flashStop
      * @see isFlashing
      */
-    PinOutDigital* flash(unsigned long duration, unsigned int times = 0);
+    PinOutDigital* flash(unsigned long duration, unsigned int times = 0) {
+      this->_interval.start(duration, times * 2); // One time on, one time off | times == 0 : forever
+      return this->off();
+    }
 
     /**
      * Stop flashing.
@@ -99,7 +140,10 @@ class PinOutDigital: public Runnable {
      * @see flash
      * @see isFlashing
      */
-    PinOutDigital* flashStop();
+    PinOutDigital* flashStop() {
+      this->_interval.stop();
+      return this;
+    }
 
     /**
      * Check if the output is flashing.
@@ -108,7 +152,9 @@ class PinOutDigital: public Runnable {
      * @see flash
      * @see flashStop
      */
-    bool isFlashing();
+    bool isFlashing() {
+      return this->_interval.isRunning();
+    }
 };
 
 #endif
