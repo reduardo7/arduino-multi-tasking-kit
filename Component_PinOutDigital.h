@@ -14,7 +14,7 @@
 class PinOutDigital: public Runnable {
   private:
     const uint8_t _pin;
-    const Interval _interval;
+    Interval _interval;
 
   protected:
     void setup() {

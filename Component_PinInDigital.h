@@ -14,10 +14,11 @@
 class PinInDigital: public Runnable {
   private:
     const uint8_t _pin;
+    const uint8_t _pinMode;
 
   protected:
     void setup() {
-      pinMode(this->_pin, INPUT);
+      pinMode(this->_pin, this->_pinMode);
     }
 
     void loop() {}
@@ -25,9 +26,11 @@ class PinInDigital: public Runnable {
   public:
     /**
      * @param pin Board digital pin reference.
+     * @param pinMode Board digital pin mode.
      */
-    PinInDigital(uint8_t pin):
-      _pin(pin)
+    PinInDigital(uint8_t pin, uint8_t pinMode = INPUT):
+      _pin(pin),
+      _pinMode(pinMode)
     {}
 
     /**
@@ -35,7 +38,7 @@ class PinInDigital: public Runnable {
      *
      * @return Current output state.
      */
-    uint8_t get() {
+    int get() {
       return digitalRead(this->_pin);
     }
 

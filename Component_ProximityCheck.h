@@ -4,8 +4,7 @@
 #include "App_Runnable.h"
 #include "Component_PinOutDigital.h"
 
-template <typename T>
-unsigned long arrayLen(T *x) {
+template <typename T> unsigned long arrayLen(T *x) {
   return sizeof(x) / sizeof(x[0]);
 }
 
@@ -50,7 +49,7 @@ enum ProximityCheckState {
  */
 class ProximityCheck: public Runnable {
   private:
-    const PinOutDigital _led;
+    PinOutDigital _led;
     const uint8_t _apin_in;
 
     // First should be LOW, to check external light
