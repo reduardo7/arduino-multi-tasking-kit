@@ -23,7 +23,7 @@ enum ButtonState {
 class Button: public Runnable {
   private:
     const uint8_t _pin;
-    unsigned int _state;
+    int _state;
     unsigned long _buttonDownMs;
     ButtonState _result;
 
