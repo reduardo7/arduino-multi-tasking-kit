@@ -5,6 +5,7 @@
 #include "Component_ProximityCheck.h"
 #include "Component_LedDisplay8.h"
 #include "Component_Button.h"
+#include "Component_ShiftRegister.h"
 #include "Lib_Timer.h"
 #include "Lib_Interval.h"
 
@@ -209,18 +210,44 @@
 
 /* **************************************************************************** */
 
-PinOutDigital l1(9);
-PinOutDigital l2(10);
-Button btn1(3);
-Button btn2(4);
+// PinOutDigital l1(9);
+// PinOutDigital l2(10);
+// Button btn1(3);
+// Button btn2(4);
+
+// class Main {
+//   public:
+//     static void setup() {}
+
+//     static void loop() {
+//       l1.setState(btn1.isDown());
+//       l2.setState(btn2.isDown());
+//     }
+// };
+
+/* **************************************************************************** */
+
+uint8_t leds[4] = {7, 8, 9, 10};
+ShiftRegister sr(leds);
+Button btnPause(3);
+Button btnDirection(4);
 
 class Main {
   public:
     static void setup() {}
 
     static void loop() {
-      l1.setState(btn1.isDown());
-      l2.setState(btn2.isDown());
+      if (btnDirection.isClicked()) {
+        sr.invertDirection();
+      }
+
+      if (btnPause.isClicked()) {
+        if (sr.isRunning()) {
+            sr.stop();
+        } else {
+          sr.start();
+        }
+      }
     }
 };
 
