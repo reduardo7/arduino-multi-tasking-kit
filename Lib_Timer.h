@@ -5,6 +5,7 @@
 
 /**
  * Timer.
+ * Run only once until time is reached.
  */
 class Timer: public Runnable {
   private:

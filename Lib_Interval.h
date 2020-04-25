@@ -5,6 +5,7 @@
 
 /**
  * Interval.
+ * Run in regular interval.
  */
 class Interval: public Runnable {
   private:
