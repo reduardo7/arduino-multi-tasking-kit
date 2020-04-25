@@ -154,28 +154,41 @@ void Main::setup() {
 /* **************************************************************************** */
 
 
+// PinOutDigital l1(9);
+// PinOutDigital l2(10);
+// PinOutDigital l3(11);
+// Interval interval(500);
+// Button btn(2);
+
+// void Main::loop() {
+//   if (interval.onStep()) {
+//     l1.invert();
+//   }
+
+//   if (btn.isClicked()) {
+//     if (interval.isRunning()) {
+//       interval.stop();
+//       l3.flash(100, 2);
+//       l2.off();
+//     } else {
+//       interval.start();
+//       l2.flash(100, 1);
+//       l3.off();
+//     }
+//   }
+// }
+
+/* **************************************************************************** */
+
+
 PinOutDigital l1(9);
 PinOutDigital l2(10);
-PinOutDigital l3(11);
-Interval interval(500);
-Button btn(2);
+Button btn1(3);
+Button btn2(4);
 
 void Main::loop() {
-  if (interval.onStep()) {
-    l1.invert();
-  }
-
-  if (btn.isClicked()) {
-    if (interval.isRunning()) {
-      interval.stop();
-      l3.flash(100, 2);
-      l2.off();
-    } else {
-      interval.start();
-      l2.flash(100, 1);
-      l3.off();
-    }
-  }
+  l1.set(btn1.isDown());
+  l2.set(btn2.isDown());
 }
 
 /* **************************************************************************** */
