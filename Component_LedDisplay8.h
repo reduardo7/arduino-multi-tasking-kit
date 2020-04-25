@@ -62,7 +62,7 @@ class LedDisplay8: public Runnable {
      *
      * @return This instance.
      */
-    LedDisplay8 off();
+    LedDisplay8* off();
 
     /**
      * Set point state.
@@ -70,7 +70,7 @@ class LedDisplay8: public Runnable {
      * @param status Point status. True to turn it on, False to turn it off.
      * @return This instance.
      */
-    LedDisplay8 setPoint(bool status);
+    LedDisplay8* setPoint(bool status);
 
     /**
      * Set display number.
@@ -79,7 +79,7 @@ class LedDisplay8: public Runnable {
      * @param point Point status. True to turn it on, False to turn it off.
      * @return This instance.
      */
-    LedDisplay8 set(uint8_t n, bool point = false);
+    LedDisplay8* set(uint8_t n, bool point = false);
 };
 
 #endif

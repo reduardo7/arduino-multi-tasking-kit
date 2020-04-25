@@ -16,32 +16,38 @@ void PinOutDigital::loop() {
   }
 }
 
-void PinOutDigital::on() {
+PinOutDigital* PinOutDigital::on() {
   digitalWrite(this->_pin, HIGH);
+  return this;
 }
 
-void PinOutDigital::off() {
+PinOutDigital* PinOutDigital::off() {
   digitalWrite(this->_pin, LOW);
+  return this;
 }
 
-void PinOutDigital::invert() {
-  this->set(!this->get());
+PinOutDigital* PinOutDigital::invert() {
+  return this->set(!this->get());
 }
 
-void PinOutDigital::set(uint8_t state) {
+PinOutDigital* PinOutDigital::set(uint8_t state) {
   if (state == LOW) {
     this->off();
   } else {
     this->on();
   }
+
+  return this;
 }
 
-void PinOutDigital::set(bool state) {
+PinOutDigital* PinOutDigital::set(bool state) {
   if (state) {
     this->on();
   } else {
     this->off();
   }
+
+  return this;
 }
 
 uint8_t PinOutDigital::get() {
@@ -52,15 +58,16 @@ bool PinOutDigital::isHigh() {
   return this->get() == HIGH;
 }
 
-void PinOutDigital::flash(unsigned long duration, unsigned int times = 0) {
+PinOutDigital* PinOutDigital::flash(unsigned long duration, unsigned int times = 0) {
   this->_interval.start(duration, times * 2); // One time on, one time off | times == 0 : forever
-  this->off();
+  return this->off();
 }
 
 bool PinOutDigital::isFlashing() {
   return this->_interval.isRunning();
 }
 
-void PinOutDigital::flashStop() {
+PinOutDigital* PinOutDigital::flashStop() {
   this->_interval.stop();
+  return this;
 }

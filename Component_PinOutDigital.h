@@ -29,37 +29,42 @@ class PinOutDigital: public Runnable {
 
     /**
      * Set output with 1/HIGH.
+     * @return This instance.
      */
-    void on();
+    PinOutDigital* on();
 
     /**
      * Set output with 0/LOW.
+     * @return This instance.
      */
-    void off();
+    PinOutDigital* off();
 
     /**
      * Invert output state.
      * If output is 0/LOW then set 1/HIGH, else set 0/LOW.
      *
+     * @return This instance.
      * @see on
      * @see off
      * @see set
      */
-    void invert();
+    PinOutDigital* invert();
 
     /**
      * Set output state.
      *
      * @param state State to set 1/HIGH or 0/LOW.
+     * @return This instance.
      */
-    void set(uint8_t state);
+    PinOutDigital* set(uint8_t state);
 
     /**
      * Set output state.
      *
      * @param state State to set true=HIGH or false=LOW.
+     * @return This instance.
      */
-    void set(bool state);
+    PinOutDigital* set(bool state);
 
     /**
      * Get output state.
@@ -81,18 +86,20 @@ class PinOutDigital: public Runnable {
      *
      * @param duration HIGHT and LOW states time in milliseconds.
      * @param times Repeat times. Set 0 to flash forever.
+     * @return This instance.
      * @see flashStop
      * @see isFlashing
      */
-    void flash(unsigned long duration, unsigned int times = 0);
+    PinOutDigital* flash(unsigned long duration, unsigned int times = 0);
 
     /**
      * Stop flashing.
      *
+     * @return This instance.
      * @see flash
      * @see isFlashing
      */
-    void flashStop();
+    PinOutDigital* flashStop();
 
     /**
      * Check if the output is flashing.

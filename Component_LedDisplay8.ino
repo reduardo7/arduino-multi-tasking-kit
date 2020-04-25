@@ -26,7 +26,7 @@ void LedDisplay8::setup() {
 
 void LedDisplay8::loop() {}
 
-LedDisplay8 LedDisplay8::off() {
+LedDisplay8* LedDisplay8::off() {
   this->_pin1.on();
   this->_pin2.on();
   this->_pin3.on();
@@ -37,7 +37,7 @@ LedDisplay8 LedDisplay8::off() {
   return this->setPoint(false);
 }
 
-LedDisplay8 LedDisplay8::setPoint(bool point) {
+LedDisplay8* LedDisplay8::setPoint(bool point) {
   if (point) {
     // Point on
     this->_pin8_dot.off();
@@ -45,10 +45,11 @@ LedDisplay8 LedDisplay8::setPoint(bool point) {
     // Point off
     this->_pin8_dot.on();
   }
+
   return this;
 }
 
-LedDisplay8 LedDisplay8::set(uint8_t n, bool point = false) {
+LedDisplay8* LedDisplay8::set(uint8_t n, bool point = false) {
   this->setPoint(point);
 
   switch (n) {
