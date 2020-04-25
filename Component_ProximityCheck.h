@@ -3,10 +3,7 @@
 
 #include "App_Runnable.h"
 #include "Component_PinOutDigital.h"
-
-template <typename T> unsigned long arrayLen(T *x) {
-  return sizeof(x) / sizeof(x[0]);
-}
+#include "Utils.h"
 
 /**
  * Proximity Check State.
@@ -125,17 +122,31 @@ class ProximityCheck: public Runnable {
     }
 
   public:
+    /**
+     * @param led_pin Led pin.
+     * @param apin_in Light sensor pin.
+     */
     ProximityCheck(uint8_t led_pin, uint8_t apin_in) :
       _led(led_pin),
       _apin_in(apin_in)
     {
-      this->_STEPS_LEN = arrayLen(_STEPS);
+      this->_STEPS_LEN = Utils::arrayLen(_STEPS);
     }
 
+    /**
+     * Get state.
+     *
+     * @return Sensor state.
+     */
     ProximityCheckState getState() {
       return this->_result;
     }
 
+    /**
+     * Calibrate sensor.
+     *
+     * @return This instance.
+     */
     ProximityCheck* calibrate() {
       int b = this->_calibrateMax();
       int a = this->_calibrateMin();

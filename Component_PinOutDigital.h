@@ -39,6 +39,7 @@ class PinOutDigital: public Runnable {
 
     /**
      * Set output with 1/HIGH.
+     *
      * @return This instance.
      */
     PinOutDigital* on() {
@@ -48,6 +49,7 @@ class PinOutDigital: public Runnable {
 
     /**
      * Set output with 0/LOW.
+     *
      * @return This instance.
      */
     PinOutDigital* off() {

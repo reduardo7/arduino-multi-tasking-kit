@@ -20,14 +20,14 @@
  */
 class LedDisplay8: public Runnable {
   private:
-    const PinOutDigital _pin1;
-    const PinOutDigital _pin2;
-    const PinOutDigital _pin3;
-    const PinOutDigital _pin4;
-    const PinOutDigital _pin5;
-    const PinOutDigital _pin6;
-    const PinOutDigital _pin7;
-    const PinOutDigital _pin8_dot;
+    PinOutDigital _pin1;
+    PinOutDigital _pin2;
+    PinOutDigital _pin3;
+    PinOutDigital _pin4;
+    PinOutDigital _pin5;
+    PinOutDigital _pin6;
+    PinOutDigital _pin7;
+    PinOutDigital _pin8_dot;
 
   protected:
     void setup() {
