@@ -228,55 +228,56 @@
 
 /* **************************************************************************** */
 
-// uint8_t leds[4] = {LED_BUILTIN, 11, 10, 9};
-// ShiftRegister sr(leds);
-// Button btnPause(3);
-// Button btnDirection(4);
-
-// class Main {
-//   public:
-//     static void setup() {}
-
-//     static void loop() {
-//       if (btnDirection.onClick()) {
-//         sr.invertDirection();
-//       }
-
-//       if (btnPause.onClick()) {
-//         if (sr.isRunning()) {
-//           sr.stop();
-//         } else {
-//           sr.start();
-//         }
-//       }
-//     }
-// };
-
-/* **************************************************************************** */
-
-PinOutDigital led(LED_BUILTIN);
 ShiftRegister sr(11, 10, 9);
-Button btnNext(3);
-Button btnPrev(4);
+Button btnPause(3);
+Button btnDirection(4);
 
 class Main {
   public:
     static void setup() {
-      sr.setMidStep(true);
+      sr.start(500);
     }
 
     static void loop() {
-      if (btnPrev.onClick()) {
-        sr.prev();
-        led.flash(50, 1);
+      if (btnDirection.onClick()) {
+        sr.invertDirection();
       }
 
-      if (btnNext.onClick()) {
-        sr.next();
-        led.flash(50, 2);
+      if (btnPause.onClick()) {
+        if (sr.isRunning()) {
+          sr.stop();
+        } else {
+          sr.start();
+        }
       }
     }
 };
+
+/* **************************************************************************** */
+
+// PinOutDigital led(LED_BUILTIN);
+// ShiftRegister sr(11, 10, 9);
+// Button btnNext(3);
+// Button btnPrev(4);
+
+// class Main {
+//   public:
+//     static void setup() {
+//       sr.setMidStep(true);
+//     }
+
+//     static void loop() {
+//       if (btnPrev.onClick()) {
+//         sr.prev();
+//         led.flash(50, 1);
+//       }
+
+//       if (btnNext.onClick()) {
+//         sr.next();
+//         led.flash(50, 2);
+//       }
+//     }
+// };
 
 /* **************************************************************************** */
 
