@@ -2,7 +2,6 @@
 #define LIB_COMPONENT_LED_DISPLAY8
 
 #include "App_Runnable.h"
-#include "Component_PinOutDigital.h"
 
 /**
  * Control 8-Segments Led Display.
@@ -20,17 +19,25 @@
  */
 class LedDisplay8: public Runnable {
   private:
-    PinOutDigital _pin1;
-    PinOutDigital _pin2;
-    PinOutDigital _pin3;
-    PinOutDigital _pin4;
-    PinOutDigital _pin5;
-    PinOutDigital _pin6;
-    PinOutDigital _pin7;
-    PinOutDigital _pin8_dot;
+    const uint8_t _pin1;
+    const uint8_t _pin2;
+    const uint8_t _pin3;
+    const uint8_t _pin4;
+    const uint8_t _pin5;
+    const uint8_t _pin6;
+    const uint8_t _pin7;
+    const uint8_t _pin8_dot;
 
   protected:
     void onSetup() {
+      pinMode(this->_pin1, OUTPUT);
+      pinMode(this->_pin2, OUTPUT);
+      pinMode(this->_pin3, OUTPUT);
+      pinMode(this->_pin4, OUTPUT);
+      pinMode(this->_pin5, OUTPUT);
+      pinMode(this->_pin6, OUTPUT);
+      pinMode(this->_pin7, OUTPUT);
+      pinMode(this->_pin8_dot, OUTPUT);
       this->off();
     }
 
@@ -72,13 +79,13 @@ class LedDisplay8: public Runnable {
      * @return This instance.
      */
     LedDisplay8* off() {
-      this->_pin1.on();
-      this->_pin2.on();
-      this->_pin3.on();
-      this->_pin4.on();
-      this->_pin5.on();
-      this->_pin6.on();
-      this->_pin7.on();
+      digitalWrite(this->_pin1, HIGH);
+      digitalWrite(this->_pin2, HIGH);
+      digitalWrite(this->_pin3, HIGH);
+      digitalWrite(this->_pin4, HIGH);
+      digitalWrite(this->_pin5, HIGH);
+      digitalWrite(this->_pin6, HIGH);
+      digitalWrite(this->_pin7, HIGH);
       return this->setPoint(false);
     }
 
@@ -91,10 +98,10 @@ class LedDisplay8: public Runnable {
     LedDisplay8* setPoint(bool point) {
       if (point) {
         // Point on
-        this->_pin8_dot.off();
+        digitalWrite(this->_pin8_dot, LOW);
       } else {
         // Point off
-        this->_pin8_dot.on();
+        digitalWrite(this->_pin8_dot, HIGH);
       }
 
       return this;
@@ -112,94 +119,94 @@ class LedDisplay8: public Runnable {
 
       switch (n) {
         case 0:
-          this->_pin1.on();
-          this->_pin2.off();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.off();
-          this->_pin6.off();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, HIGH);
+          digitalWrite(this->_pin2, LOW);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, LOW);
+          digitalWrite(this->_pin6, LOW);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 1:
-          this->_pin1.on();
-          this->_pin2.on();
-          this->_pin3.on();
-          this->_pin4.off();
-          this->_pin5.on();
-          this->_pin6.on();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, HIGH);
+          digitalWrite(this->_pin2, HIGH);
+          digitalWrite(this->_pin3, HIGH);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, HIGH);
+          digitalWrite(this->_pin6, HIGH);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 2:
-          this->_pin1.off();
-          this->_pin2.on();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.off();
-          this->_pin6.off();
-          this->_pin7.on();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, HIGH);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, LOW);
+          digitalWrite(this->_pin6, LOW);
+          digitalWrite(this->_pin7, HIGH);
           break;
         case 3:
-          this->_pin1.off();
-          this->_pin2.on();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.on();
-          this->_pin6.off();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, HIGH);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, HIGH);
+          digitalWrite(this->_pin6, LOW);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 4:
-          this->_pin1.off();
-          this->_pin2.off();
-          this->_pin3.on();
-          this->_pin4.off();
-          this->_pin5.on();
-          this->_pin6.on();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, LOW);
+          digitalWrite(this->_pin3, HIGH);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, HIGH);
+          digitalWrite(this->_pin6, HIGH);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 5:
-          this->_pin1.off();
-          this->_pin2.off();
-          this->_pin3.off();
-          this->_pin4.on();
-          this->_pin5.on();
-          this->_pin6.off();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, LOW);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, HIGH);
+          digitalWrite(this->_pin5, HIGH);
+          digitalWrite(this->_pin6, LOW);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 6:
-          this->_pin1.off();
-          this->_pin2.on();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.off();
-          this->_pin6.off();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, HIGH);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, LOW);
+          digitalWrite(this->_pin6, LOW);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 7:
-          this->_pin1.on();
-          this->_pin2.on();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.on();
-          this->_pin6.on();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, HIGH);
+          digitalWrite(this->_pin2, HIGH);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, HIGH);
+          digitalWrite(this->_pin6, HIGH);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 8:
-          this->_pin1.off();
-          this->_pin2.off();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.off();
-          this->_pin6.off();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, LOW);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, LOW);
+          digitalWrite(this->_pin6, LOW);
+          digitalWrite(this->_pin7, LOW);
           break;
         case 9:
-          this->_pin1.off();
-          this->_pin2.off();
-          this->_pin3.off();
-          this->_pin4.off();
-          this->_pin5.on();
-          this->_pin6.on();
-          this->_pin7.off();
+          digitalWrite(this->_pin1, LOW);
+          digitalWrite(this->_pin2, LOW);
+          digitalWrite(this->_pin3, LOW);
+          digitalWrite(this->_pin4, LOW);
+          digitalWrite(this->_pin5, HIGH);
+          digitalWrite(this->_pin6, HIGH);
+          digitalWrite(this->_pin7, LOW);
           break;
         default:
           // Invalid!

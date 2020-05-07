@@ -2,7 +2,6 @@
 #define LIB_COMPONENT_PROXIMITY_CHECK
 
 #include "App_Runnable.h"
-#include "Component_PinOutDigital.h"
 #include "Utils.h"
 
 /**
@@ -46,7 +45,7 @@ enum ProximityCheckState {
  */
 class ProximityCheck: public Runnable {
   private:
-    PinOutDigital _led;
+    const uint8_t _led;
     const uint8_t _apin_in;
 
     // First should be LOW, to check external light
@@ -61,7 +60,7 @@ class ProximityCheck: public Runnable {
     int _prox = 800;
 
     int _checkInputState(bool state) {
-      this->_led.set(state);
+      digitalWrite(this->_led, state ? HIGH : LOW);
       delay(50);
       return analogRead(this->_apin_in);
     }
@@ -91,6 +90,10 @@ class ProximityCheck: public Runnable {
     }
 
   protected:
+    void onSetup() {
+      pinMode(this->_led, OUTPUT);
+    }
+
     void onLoop() {
       int i = 0;
       bool result = true;

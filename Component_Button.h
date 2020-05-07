@@ -1,8 +1,6 @@
 #ifndef LIB_COMPONENT_BUTTON
 #define LIB_COMPONENT_BUTTON
 
-#include "Component_PinInDigital.h"
-
 /**
  * Button State.
  */
@@ -22,13 +20,14 @@ enum ButtonState {
 */
 class Button: public Runnable {
   private:
-    PinInDigital _pin;
+    const uint8_t _pin;
     int _state;
     unsigned long _buttonDownMs;
     ButtonState _result;
 
   protected:
     void onSetup() {
+      pinMode(this->_pin, INPUT_PULLUP);
       this->_state = HIGH;
       this->_result = ButtonState::NO;
     }
@@ -36,7 +35,7 @@ class Button: public Runnable {
     void onLoop() {
       this->_result = ButtonState::NO;
       int prevState = this->_state;
-      this->_state = this->_pin.get();
+      this->_state = digitalRead(this->_pin);
 
       if (prevState == HIGH && this->_state == LOW) {
         this->_buttonDownMs = millis();
@@ -60,7 +59,7 @@ class Button: public Runnable {
      * @param pin Board digital pin reference.
      */
     Button(uint8_t pin) :
-      _pin(pin, true)
+      _pin(pin)
     {
       this->_buttonDownMs = 0;
     }
