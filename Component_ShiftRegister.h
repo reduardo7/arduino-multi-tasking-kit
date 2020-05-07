@@ -23,6 +23,7 @@ class ShiftRegister: public Runnable {
     uint8_t _total = 0;
     uint8_t _index = 0;
     bool _directionNext;
+    // @TODO _midStep
     bool _midStep;
     Interval _interval;
 
@@ -56,6 +57,7 @@ class ShiftRegister: public Runnable {
 
     void onLoop() {
       if (this->_interval.onStep()) {
+        // @TODO _midStep
         // if (this->_midStep) {
         // } else {
         // }
@@ -96,11 +98,14 @@ class ShiftRegister: public Runnable {
 
   public:
     /**
-     * @param pins const Board digital pins erences.
-     * @param loopDuration Time between loop. 0 to no auto start loop.
-     * @param loopCount Repeat times. Set 0 for infinite loop.
-     * @param directionNext True to move next, false to move previous.
-     * @param midStep Move mid step.
+     * @param pin0 Board digital pin 0 out.
+     * @param pin1 Board digital pin 1 out.
+     * @param pin2 Board digital pin 2 out.
+     * @param pin3 Board digital pin 3 out.
+     * @param pin4 Board digital pin 4 out.
+     * @param pin5 Board digital pin 5 out.
+     * @param pin6 Board digital pin 6 out.
+     * @param pin7 Board digital pin 7 out.
      */
     ShiftRegister(
       uint8_t pin0 = ShiftRegister::_PIN_VOID,
@@ -180,6 +185,7 @@ class ShiftRegister: public Runnable {
      * @return This instance.
      */
     ShiftRegister* setMidStep(bool midStep) {
+      // @TODO _midStep
       this->_midStep = midStep;
       return this;
     }
