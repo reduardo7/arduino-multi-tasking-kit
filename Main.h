@@ -22,15 +22,15 @@
 //     static void setup() {}
 
 //     static void loop() {
-//     if (btnAdd.onClick()) {
-//       num++;
-//     }
+//       if (btnAdd.onClick()) {
+//         num++;
+//       }
 
-//     if (btnMin.onClick()) {
-//       num--;
-//     }
+//       if (btnMin.onClick()) {
+//         num--;
+//       }
 
-//     disp.set(num);
+//       disp.set(num);
 //     }
 // };
 
