@@ -17,20 +17,18 @@ class PinInDigital: public Runnable {
     const uint8_t _pinMode;
 
   protected:
-    void setup() {
+    void onSetup() {
       pinMode(this->_pin, this->_pinMode);
     }
-
-    void loop() {}
 
   public:
     /**
      * @param pin Board digital pin reference.
-     * @param pinMode Board digital pin mode.
+     * @param pullUp Board digital pin mode as INPUT_PULLUP?
      */
-    PinInDigital(uint8_t pin, uint8_t pinMode = INPUT):
+    PinInDigital(uint8_t pin, bool pullUp = false):
       _pin(pin),
-      _pinMode(pinMode)
+      _pinMode(pullUp ? INPUT_PULLUP : INPUT)
     {}
 
     /**

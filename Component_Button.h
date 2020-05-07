@@ -28,12 +28,12 @@ class Button: public Runnable {
     ButtonState _result;
 
   protected:
-    void setup() {
+    void onSetup() {
       this->_state = HIGH;
       this->_result = ButtonState::NO;
     }
 
-    void loop() {
+    void onLoop() {
       this->_result = ButtonState::NO;
       int prevState = this->_state;
       this->_state = this->_pin.get();
@@ -60,7 +60,7 @@ class Button: public Runnable {
      * @param pin Board digital pin reference.
      */
     Button(uint8_t pin) :
-      _pin(pin, INPUT_PULLUP)
+      _pin(pin, true)
     {
       this->_buttonDownMs = 0;
     }
@@ -69,10 +69,10 @@ class Button: public Runnable {
      * Was the Button pressed?
      *
      * @return True if the button has been pressed.
-     * @see isShortClick
-     * @see isLongClick
+     * @see onShortClick
+     * @see onLongClick
      */
-    bool isClicked() {
+    bool onClick() {
       return this->_result != ButtonState::NO;
     }
 
@@ -80,10 +80,10 @@ class Button: public Runnable {
      * Has the button been pressed short?
      *
      * @return True if the button has been pressed short.
-     * @see isClicked
-     * @see isLongClick
+     * @see onClick
+     * @see onLongClick
      */
-    bool isShortClick() {
+    bool onShortClick() {
       return this->_result == ButtonState::SHORT;
     }
 
@@ -91,11 +91,20 @@ class Button: public Runnable {
      * Has the button been pressed long?
      *
      * @return True if the button has been pressed long.
-     * @see isClicked
-     * @see isShortClick
+     * @see onClick
+     * @see onShortClick
      */
-    bool Button::isLongClick() {
+    bool Button::onLongClick() {
       return this->_result == ButtonState::LONG;
+    }
+
+    /**
+     * Get button state.
+     *
+     * @return Button state.
+     */
+    ButtonState getState() {
+      return this->_result;
     }
 
     /**
@@ -103,8 +112,17 @@ class Button: public Runnable {
      *
      * @return True while the button is being pressed.
      */
-    bool isDown() {
+    bool isPressed() {
       return this->_buttonDownMs > 0;
+    }
+
+    /**
+     * Is the button being released?
+     *
+     * @return True while the button is being pressed.
+     */
+    bool isReleased() {
+      return this->_buttonDownMs == 0;
     }
 };
 

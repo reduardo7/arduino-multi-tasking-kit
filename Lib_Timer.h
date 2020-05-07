@@ -10,16 +10,17 @@
 class Timer: public Runnable {
   private:
     bool _autoStart = false;
+    bool _finished = false;
     bool _done = false;
     unsigned long _time = 0;
     unsigned long _start = 0;
 
   protected:
-    void setup() {
+    void onSetup() {
       this->_autoStart = this->_time > 0;
     }
 
-    void loop() {
+    void onLoop() {
       if (this->_autoStart) {
         this->_autoStart = false;
         this->start();
@@ -31,8 +32,8 @@ class Timer: public Runnable {
 
         if (current >= to) {
           this->_start = 0;
+          this->_finished = true;
           this->_done = true;
-
         }
       }
     }
@@ -86,6 +87,7 @@ class Timer: public Runnable {
       }
 
       this->_start = millis();
+      this->_finished = false;
       this->_done = false;
       return this;
     }
@@ -98,9 +100,25 @@ class Timer: public Runnable {
      * @see onFinish
      */
     Timer* stop() {
+      this->_done = this->_start > 0;
       this->_start = 0;
-      this->_done = false;
+      this->_finished = false;
       return this;
+    }
+
+    /**
+     * Returns true only once when the time is reached or wait canceled.
+     *
+     * @return True on time reached or wait canceled.
+     * @see start
+     * @see stop
+     * @see onFinish
+     * @see isFinished
+     */
+    bool onDone() {
+      const bool d = this->_done;
+      this->_done = false;
+      return d;
     }
 
     /**
@@ -109,18 +127,30 @@ class Timer: public Runnable {
      * @return True on time reached.
      * @see start
      * @see stop
+     * @see onDone
      * @see isFinished
      */
     bool onFinish() {
-      const bool d = this->_done;
-      this->_done = false;
-      return d;
+      const bool f = this->_finished;
+      this->_finished = false;
+      return f;
+    }
+
+    /**
+     * Returns true when timer is waiting.
+     *
+     * @return True on timer is waiting.
+     * @see isFinished
+     */
+    bool isRunning() {
+      return this->_start > 0;
     }
 
     /**
      * Returns true when timer is not waiting.
      *
      * @return True on timer is not waiting.
+     * @see isRunning
      */
     bool isFinished() {
       return this->_start == 0;

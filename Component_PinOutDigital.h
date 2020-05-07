@@ -17,12 +17,12 @@ class PinOutDigital: public Runnable {
     Interval _interval;
 
   protected:
-    void setup() {
+    void onSetup() {
       pinMode(this->_pin, OUTPUT);
       this->off();
     }
 
-    void loop() {
+    void onLoop() {
       if (this->_interval.onStep()) {
         this->invert();
       }
@@ -67,7 +67,7 @@ class PinOutDigital: public Runnable {
      * @see set
      */
     PinOutDigital* invert() {
-      return this->setState(!this->get());
+      return this->set(!this->get());
     }
 
     /**
@@ -92,7 +92,7 @@ class PinOutDigital: public Runnable {
      * @param state State to set true=HIGH or false=LOW.
      * @return This instance.
      */
-    PinOutDigital* setState(bool state) {
+    PinOutDigital* set(bool state) {
       if (state) {
         this->on();
       } else {

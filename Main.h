@@ -8,6 +8,7 @@
 #include "Component_ShiftRegister.h"
 #include "Lib_Timer.h"
 #include "Lib_Interval.h"
+#include "Lib_While.h"
 
 /* **************************************************************************** */
 
@@ -18,20 +19,20 @@
 
 // class Main {
 //   public:
-//     void setup() {}
+//     static void setup() {}
 
-//     void loop() {
-//     if (btnAdd.isClicked()) {
+//     static void loop() {
+//     if (btnAdd.onClick()) {
 //       num++;
 //     }
 
-//     if (btnMin.isClicked()) {
+//     if (btnMin.onClick()) {
 //       num--;
 //     }
 
 //     disp.set(num);
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -42,10 +43,10 @@
 
 // class Main {
 //   public:
-//     void setup() {}
+//     static void setup() {}
 
-//     void loop() {
-//       if (btn.isClicked()) {
+//     static void loop() {
+//       if (btn.onClick()) {
 //         ledErr.off();
 //         pc.calibrate();
 //       } else {
@@ -65,7 +66,7 @@
 //         }
 //       }
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -75,19 +76,19 @@
 
 // class Main {
 //   public:
-//     void setup() {
+//     static void setup() {
 //       ledErr.flash(500, 10);
 //       ledState.flash(500, 0);
 //     }
 
-//     void loop() {
+//     static void loop() {
 //       if (ledState.isFlashing()) {
 //         ledErr.on();
 //       } else {
 //         ledErr.off();
 //       }
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -96,16 +97,16 @@
 
 // class Main {
 //   public:
-//     void setup() {
+//     static void setup() {
 //       led.flash(500, 5);
 //     }
 
-//     void loop() {
+//     static void loop() {
 //       if (!led.isFlashing()) {
 //         led2.on();
 //       }
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -117,28 +118,28 @@
 
 // class Main {
 //   public:
-//     void setup() {}
+//     static void setup() {}
 
-//     void loop() {
-//       if (btn.isClicked()) {
+//     static void loop() {
+//       if (btn.onClick()) {
 //         l1.invert();
 //       }
 
-//       if (btn.isLongClick()) {
+//       if (btn.onLongClick()) {
 //         l2.invert();
 //       }
 
-//       if (btn.isShortClick()) {
+//       if (btn.onShortClick()) {
 //         l3.invert();
 //       }
 
-//       if (btn.isDown()) {
+//       if (btn.isPressed()) {
 //         l4.on();
 //       } else {
 //         l4.off();
 //       }
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -150,9 +151,9 @@
 
 // class Main {
 //   public:
-//     void setup() {}
+//     static void setup() {}
 
-//     void loop() {
+//     static void loop() {
 //       if (timer.onFinish()) {
 //         l1.on();
 //       }
@@ -171,11 +172,11 @@
 //         }
 //       }
 
-//       if (btn.isClicked()) {
+//       if (btn.onClick()) {
 //         timer.start();
 //       }
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -183,18 +184,18 @@
 // PinOutDigital l2(10);
 // PinOutDigital l3(11);
 // Interval interval(500);
-// Button btn(2);
+// Button btn(3);
 
 // class Main {
 //   public:
-//     void setup() {}
+//     static void setup() {}
 
-//     void loop() {
+//     static void loop() {
 //       if (interval.onStep()) {
 //         l1.invert();
 //       }
 
-//       if (btn.isClicked()) {
+//       if (btn.onClick()) {
 //         if (interval.isRunning()) {
 //           interval.stop();
 //           l3.flash(100, 2);
@@ -206,7 +207,7 @@
 //         }
 //       }
 //     }
-// }
+// };
 
 /* **************************************************************************** */
 
@@ -220,36 +221,83 @@
 //     static void setup() {}
 
 //     static void loop() {
-//       l1.setState(btn1.isDown());
-//       l2.setState(btn2.isDown());
+//       l1.set(btn1.isPressed());
+//       l2.set(btn2.isPressed());
 //     }
 // };
 
 /* **************************************************************************** */
 
-uint8_t leds[4] = {7, 8, 9, 10};
-ShiftRegister sr(leds);
-Button btnPause(3);
-Button btnDirection(4);
+// uint8_t leds[4] = {LED_BUILTIN, 11, 10, 9};
+// ShiftRegister sr(leds);
+// Button btnPause(3);
+// Button btnDirection(4);
+
+// class Main {
+//   public:
+//     static void setup() {}
+
+//     static void loop() {
+//       if (btnDirection.onClick()) {
+//         sr.invertDirection();
+//       }
+
+//       if (btnPause.onClick()) {
+//         if (sr.isRunning()) {
+//           sr.stop();
+//         } else {
+//           sr.start();
+//         }
+//       }
+//     }
+// };
+
+/* **************************************************************************** */
+
+PinOutDigital led(LED_BUILTIN);
+ShiftRegister sr(11, 10, 9);
+Button btnNext(3);
+Button btnPrev(4);
 
 class Main {
   public:
-    static void setup() {}
+    static void setup() {
+      sr.setMidStep(true);
+    }
 
     static void loop() {
-      if (btnDirection.isClicked()) {
-        sr.invertDirection();
+      if (btnPrev.onClick()) {
+        sr.prev();
+        led.flash(50, 1);
       }
 
-      if (btnPause.isClicked()) {
-        if (sr.isRunning()) {
-            sr.stop();
-        } else {
-          sr.start();
-        }
+      if (btnNext.onClick()) {
+        sr.next();
+        led.flash(50, 2);
       }
     }
 };
+
+/* **************************************************************************** */
+
+// PinOutDigital l1(9);
+// PinOutDigital l2(LED_BUILTIN);
+// While whileTest;
+
+// class Main {
+//   public:
+//     static void setup() {
+//       l1.on();
+//       l2.off();
+//     }
+
+//     static void loop() {
+//       if (whileTest.on(1000)) {
+//         l1.invert();
+//         l2.invert();
+//       }
+//     }
+// };
 
 /* **************************************************************************** */
 

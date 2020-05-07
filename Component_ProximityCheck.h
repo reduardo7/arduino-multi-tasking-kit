@@ -27,7 +27,7 @@ enum ProximityCheckState {
  *  [Light Sensor B] <> (+)
  *
  *  Example:
- *    if (btn.isClicked()) {
+ *    if (btn.onClick()) {
  *      pc.calibrate();
  *    } else {
  *      switch (pc.getState()) {
@@ -91,9 +91,7 @@ class ProximityCheck: public Runnable {
     }
 
   protected:
-    void setup() {}
-
-    void loop() {
+    void onLoop() {
       int i = 0;
       bool result = true;
 

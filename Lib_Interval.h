@@ -17,13 +17,13 @@ class Interval: public Runnable {
     unsigned long _start = 0;
 
   protected:
-    void setup() {
+    void onSetup() {
       if (this->_time > 0) {
         this->_working = true;
       }
     }
 
-    void loop() {
+    void onLoop() {
       if (
         this->_working
         && this->_time
@@ -136,9 +136,20 @@ class Interval: public Runnable {
      * Returns true when interval is running.
      *
      * @return True on interval is running.
+     * @see isFinished
      */
     bool isRunning() {
       return this->_working;
+    }
+
+    /**
+     * Returns true when interval is not running.
+     *
+     * @return True on interval is not running.
+     * @see isRunning
+     */
+    bool isFinished() {
+      return !this->_working;
     }
 };
 

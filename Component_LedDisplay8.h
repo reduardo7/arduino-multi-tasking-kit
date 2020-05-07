@@ -30,11 +30,9 @@ class LedDisplay8: public Runnable {
     PinOutDigital _pin8_dot;
 
   protected:
-    void setup() {
+    void onSetup() {
       this->off();
     }
-
-    void loop() {}
 
   public:
 

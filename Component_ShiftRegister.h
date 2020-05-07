@@ -2,77 +2,150 @@
 #define LIB_COMPONENT_SHIFT_REGISTER
 
 #include "App_Runnable.h"
-#include "Utils.h"
 #include "Lib_Interval.h"
-#include "Component_PinOutDigital.h"
 
 /**
  * Control Pin Out Digital pin shift register.
  */
 class ShiftRegister: public Runnable {
   private:
-    const unsigned long _loopDuration;
-    const unsigned int _loopCount;
-    const uint8_t * _pinsRef;
+    static const uint8_t _PIN_VOID = 31;
+
+    const uint8_t _pin0;
+    const uint8_t _pin1;
+    const uint8_t _pin2;
+    const uint8_t _pin3;
+    const uint8_t _pin4;
+    const uint8_t _pin5;
+    const uint8_t _pin6;
+    const uint8_t _pin7;
+
+    uint8_t _total = 0;
     uint8_t _index = 0;
-    uint8_t _total;
     bool _directionNext;
     bool _midStep;
     Interval _interval;
-    PinOutDigital ** _pins;
 
   protected:
-    void setup() {
-      for (int i = 0; i < this->_total; i++) {
-        this->_pins[i] = new PinOutDigital(this->_pinsRef[i]);
-      }
-
-      if (this->_loopDuration) {
-        this->start(this->_loopDuration, this->_loopCount);
+    void onSetup() {
+      if (this->_pin0 < ShiftRegister::_PIN_VOID) {
+        pinMode(this->_pin0, OUTPUT);
+        if (this->_pin1 < ShiftRegister::_PIN_VOID) {
+          pinMode(this->_pin1, OUTPUT);
+          if (this->_pin2 < ShiftRegister::_PIN_VOID) {
+            pinMode(this->_pin2, OUTPUT);
+            if (this->_pin3 < ShiftRegister::_PIN_VOID) {
+              pinMode(this->_pin3, OUTPUT);
+              if (this->_pin4 < ShiftRegister::_PIN_VOID) {
+                pinMode(this->_pin4, OUTPUT);
+                if (this->_pin5 < ShiftRegister::_PIN_VOID) {
+                  pinMode(this->_pin5, OUTPUT);
+                  if (this->_pin6 < ShiftRegister::_PIN_VOID) {
+                    pinMode(this->_pin6, OUTPUT);
+                    if (this->_pin7 < ShiftRegister::_PIN_VOID) {
+                      pinMode(this->_pin7, OUTPUT);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
 
-    void loop() {
+    void onLoop() {
       if (this->_interval.onStep()) {
-        if (this->_midStep) {
-          this->move();
+        // if (this->_midStep) {
+        // } else {
+        // }
+        this->move();
+      }
+    }
 
-          for (int i = 0; i < this->_total; i++) {
-            this->_pins[i][0].set(this->_index == i);
-          }
-        } else {
-          for (int i = 0; i < this->_total; i++) {
-            this->_pins[i][0].off();
-          }
+    void onReady() {
+      this->exec();
+    }
 
-          this->move();
+    void exec() {
+      if (this->_pin0 < ShiftRegister::_PIN_VOID) {
+        digitalWrite(this->_pin0, this->_index == 0 ? HIGH : LOW);
+        if (this->_pin1 < ShiftRegister::_PIN_VOID) {
+          digitalWrite(this->_pin1, this->_index == 1 ? HIGH : LOW);
+          if (this->_pin2 < ShiftRegister::_PIN_VOID) {
+            digitalWrite(this->_pin2, this->_index == 2 ? HIGH : LOW);
+            if (this->_pin3 < ShiftRegister::_PIN_VOID) {
+              digitalWrite(this->_pin3, this->_index == 3 ? HIGH : LOW);
+              if (this->_pin4 < ShiftRegister::_PIN_VOID) {
+                digitalWrite(this->_pin4, this->_index == 4 ? HIGH : LOW);
+                if (this->_pin5 < ShiftRegister::_PIN_VOID) {
+                  digitalWrite(this->_pin5, this->_index == 5 ? HIGH : LOW);
+                  if (this->_pin6 < ShiftRegister::_PIN_VOID) {
+                    digitalWrite(this->_pin6, this->_index == 6 ? HIGH : LOW);
+                    if (this->_pin7 < ShiftRegister::_PIN_VOID) {
+                      digitalWrite(this->_pin7, this->_index == 7 ? HIGH : LOW);
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
 
   public:
     /**
-     * @param pins Board digital pins references.
+     * @param pins const Board digital pins erences.
      * @param loopDuration Time between loop. 0 to no auto start loop.
      * @param loopCount Repeat times. Set 0 for infinite loop.
      * @param directionNext True to move next, false to move previous.
      * @param midStep Move mid step.
      */
     ShiftRegister(
-      uint8_t * pins,
-      unsigned long loopDuration = 0,
-      unsigned int loopCount = 0,
-      bool directionNext = true,
-      bool midStep = false
+      uint8_t pin0 = ShiftRegister::_PIN_VOID,
+      uint8_t pin1 = ShiftRegister::_PIN_VOID,
+      uint8_t pin2 = ShiftRegister::_PIN_VOID,
+      uint8_t pin3 = ShiftRegister::_PIN_VOID,
+      uint8_t pin4 = ShiftRegister::_PIN_VOID,
+      uint8_t pin5 = ShiftRegister::_PIN_VOID,
+      uint8_t pin6 = ShiftRegister::_PIN_VOID,
+      uint8_t pin7 = ShiftRegister::_PIN_VOID
     ):
-      _pinsRef(pins),
-      _interval(),
-      _loopDuration(loopDuration),
-      _loopCount(loopCount),
-      _directionNext(directionNext),
-      _midStep(midStep)
+      _pin0(pin0),
+      _pin1(pin1),
+      _pin2(pin2),
+      _pin3(pin3),
+      _pin4(pin4),
+      _pin5(pin5),
+      _pin6(pin6),
+      _pin7(pin7),
+      _interval()
     {
-      this->_total = Utils::arrayLen(this->_pinsRef);
+      if (pin0 < ShiftRegister::_PIN_VOID) {
+        _total++;
+        if (pin1 < ShiftRegister::_PIN_VOID) {
+          _total++;
+          if (pin2 < ShiftRegister::_PIN_VOID) {
+            _total++;
+            if (pin3 < ShiftRegister::_PIN_VOID) {
+              _total++;
+              if (pin4 < ShiftRegister::_PIN_VOID) {
+                _total++;
+                if (pin5 < ShiftRegister::_PIN_VOID) {
+                  _total++;
+                  if (pin6 < ShiftRegister::_PIN_VOID) {
+                    _total++;
+                    if (pin7 < ShiftRegister::_PIN_VOID) {
+                      _total++;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     /**
@@ -125,6 +198,7 @@ class ShiftRegister: public Runnable {
         this->_index--;
       }
 
+      this->exec();
       return this;
     }
 
@@ -142,6 +216,7 @@ class ShiftRegister: public Runnable {
         this->_index++;
       }
 
+      this->exec();
       return this;
     }
 
@@ -164,6 +239,30 @@ class ShiftRegister: public Runnable {
     }
 
     /**
+     * Set index position.
+     *
+     * @param index Index position.
+     * @return This instance.
+     * @see next
+     * @see prev
+     * @see index
+     */
+    ShiftRegister* setIndex(uint8_t index) {
+      if (index < 0) {
+        this->_index = 0;
+      } else {
+        uint8_t t = this->_total - 1;
+        if (index > t) {
+          this->_index = t;
+        } else {
+          this->_index = index;
+        }
+      }
+
+      return this;
+    }
+
+    /**
      * Is it the last pin?
      *
      * @return True if it is the last pin.
@@ -179,6 +278,16 @@ class ShiftRegister: public Runnable {
      */
     bool isFirst() {
       return this->_index == 0;
+    }
+
+    /**
+     * Get index.
+     *
+     * @return Current index.
+     * @see setIndex
+     */
+    uint8_t index() {
+      return this->_index;
     }
 
     /**

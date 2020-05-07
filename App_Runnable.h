@@ -10,10 +10,12 @@ class Runnable {
   private:
     static Runnable *headRunnable;
     Runnable *nextRunnable;
+    static bool isReady;
 
   protected:
-    virtual void setup();
-    virtual void loop();
+    virtual void onSetup() {}
+    virtual void onLoop() {}
+    virtual void onReady() {}
 
   public:
     Runnable() {
@@ -23,23 +25,30 @@ class Runnable {
 
     static void setupAll() {
       for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
-        r->setup();
+        r->onSetup();
       }
     }
 
     static void loopAll() {
-      unsigned long current = millis();
-
       // Wait until `millis()` has a value
-      if (current) {
-        for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
-          r->loop();
+      if (millis()) {
+        if (isReady) {
+          for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
+            r->onLoop();
+          }
+        } else {
+          for (Runnable *r = headRunnable; r; r = r->nextRunnable) {
+            r->onReady();
+          }
+
+          isReady = true;
         }
       }
     }
 };
 
 Runnable *Runnable::headRunnable = NULL;
+bool Runnable::isReady = false;
 
 #endif
 
