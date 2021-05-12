@@ -32,6 +32,7 @@ class Button: public Runnable {
       pinMode(this->_pin, INPUT_PULLUP);
       this->_state = HIGH;
       this->_result = ButtonState::NO;
+      this->_buttonDownMs = 0;
     }
 
     void onLoop() {
@@ -62,9 +63,7 @@ class Button: public Runnable {
      */
     Button(uint8_t pin) :
       _pin(pin)
-    {
-      this->_buttonDownMs = 0;
-    }
+    {}
 
     /**
      * Was the Button pressed?
