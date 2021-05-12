@@ -1,6 +1,8 @@
 #ifndef LIB_COMPONENT_BUTTON
 #define LIB_COMPONENT_BUTTON
 
+#include "App_Runnable.h"
+
 /**
  * Button State.
  */
@@ -17,7 +19,7 @@ enum ButtonState {
  * @note Connection:
  *  {pin} <> [Button Pin A]
  *  [Button Pin B] <> (-)
-*/
+ */
 class Button: public Runnable {
   private:
     const uint8_t _pin;
