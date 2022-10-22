@@ -1,16 +1,10 @@
 #ifndef MAIN
 #define MAIN
 
-#include "Component_PinOutDigital.h"
-#include "Component_ProximityCheck.h"
-#include "Component_LedDisplay8.h"
-#include "Component_Button.h"
-#include "Component_ShiftRegister.h"
-#include "Lib_Timer.h"
-#include "Lib_Interval.h"
-#include "Lib_While.h"
-
 /* **************************************************************************** */
+
+// #include <Component_Button.h>
+// #include <Component_LedDisplay8.h>
 
 // LedDisplay8 disp(11, 10, 9, 8, 7, 6, 5, 4);
 // Button btnAdd(2);
@@ -35,6 +29,10 @@
 // };
 
 /* **************************************************************************** */
+
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
+// #include <Component_ProximityCheck.h>
 
 // PinOutDigital ledState(13);
 // PinOutDigital ledErr(12);
@@ -70,6 +68,9 @@
 
 /* **************************************************************************** */
 
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
+
 // PinOutDigital ledState(2);
 // PinOutDigital ledErr(3);
 // Button btn(5);
@@ -92,6 +93,8 @@
 
 /* **************************************************************************** */
 
+// #include <Component_PinOutDigital.h>
+
 // PinOutDigital led(13);
 // PinOutDigital led2(4);
 
@@ -109,6 +112,9 @@
 // };
 
 /* **************************************************************************** */
+
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
 
 // PinOutDigital l1(9);
 // PinOutDigital l2(10);
@@ -142,6 +148,10 @@
 // };
 
 /* **************************************************************************** */
+
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
+// #include <Lib_Timer.h>
 
 // PinOutDigital l1(9);
 // PinOutDigital l2(10);
@@ -180,6 +190,10 @@
 
 /* **************************************************************************** */
 
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
+// #include <Lib_Interval.h>
+
 // PinOutDigital l1(9);
 // PinOutDigital l2(10);
 // PinOutDigital l3(11);
@@ -211,6 +225,9 @@
 
 /* **************************************************************************** */
 
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
+
 // PinOutDigital l1(9);
 // PinOutDigital l2(10);
 // Button btn1(3);
@@ -227,6 +244,9 @@
 // };
 
 /* **************************************************************************** */
+
+#include <Component_Button.h>
+#include <Component_ShiftRegister.h>
 
 ShiftRegister sr(11, 10, 9);
 Button btnPause(3);
@@ -255,6 +275,10 @@ class Main {
 
 /* **************************************************************************** */
 
+// #include <Component_Button.h>
+// #include <Component_PinOutDigital.h>
+// #include <Component_ShiftRegister.h>
+
 // PinOutDigital led(LED_BUILTIN);
 // ShiftRegister sr(11, 10, 9);
 // Button btnNext(3);
@@ -280,6 +304,9 @@ class Main {
 // };
 
 /* **************************************************************************** */
+
+// #include <Component_PinOutDigital.h>
+// #include <Lib_While.h>
 
 // PinOutDigital l1(9);
 // PinOutDigital l2(LED_BUILTIN);
