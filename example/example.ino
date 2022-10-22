@@ -5,6 +5,7 @@ void setup() {
 
   Runnable::setupAll();
   Main::setup();
+
   Serial.println("Ready");
 }
 
