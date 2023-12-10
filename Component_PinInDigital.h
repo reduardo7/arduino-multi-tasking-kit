@@ -7,9 +7,8 @@
  * Control Pin In Digital pin.
  *
  * @note Connection:
- *  [R10k] <> (-)
- *  {pin} <> [R10k]
- *  {pin} <SWITCH> (+)
+ *  {pin} <> [R10k] <> (-)
+ *  {pin} <> [Button / Switch] <> (+)
  */
 class PinInDigital: public Runnable {
   private:

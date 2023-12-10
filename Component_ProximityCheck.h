@@ -19,11 +19,9 @@ enum ProximityCheckState {
  * @see https://pimylifeup.com/arduino-light-sensor
  * @see ProximityCheckState
  * @note Connection:
- *  {led_pin} <> [Led +]
- *  (-) <> [Led -]
+ *  {led_pin} <> [Led + | Led -] <> (-)
  *  {apin_in} <> [R 10K] <> (-)
- *  {apin_in} <> [Light Sensor A]
- *  [Light Sensor B] <> (+)
+ *  {apin_in} <> [Light Sensor] <> (+)
  *
  *  Example:
  *    if (btn.onClick()) {

@@ -1,10 +1,12 @@
 # Arduino Multi-Tasking Kit | Usage > Library
 
-## Interval
+## Class `Interval`
 
 Run in regular interval.
 
-### Constructor `Interval(unsigned long time = 0, unsigned int count = 0)`
+### `Interval` methods
+
+#### `Interval(unsigned long time = 0, unsigned int count = 0)` constructor
 
 If `time` has a value, the interval will start _on setup_.
 
@@ -13,7 +15,7 @@ If `time` has a value, the interval will start _on setup_.
 - `time`: interval time in milliseconds.
 - `count`: number of times to run, 0 for infinite.
 
-### `Interval Interval.setIntervalTime(unsigned long time)`
+#### `Interval Interval.setIntervalTime(unsigned long time)`
 
 Set interval time in milliseconds.
 
@@ -23,7 +25,7 @@ Set interval time in milliseconds.
 
 **Returns**: `Interval` instance.
 
-### `Interval Interval.start(unsigned long duration = 0, unsigned int count = NULL)`
+#### `Interval Interval.start(unsigned long duration = 0, unsigned int count = NULL)`
 
 Start interval.
 
@@ -34,19 +36,19 @@ Start interval.
 
 **Returns**: `Interval` instance.
 
-### `Interval Interval.stop()`
+#### `Interval Interval.stop()`
 
 Stop interval.
 
 **Returns**: `Interval` instance.
 
-### `bool Interval.onStep()`
+#### `bool Interval.onStep()`
 
 Returns `true` on each interval step.
 
 **Returns**: `bool`.
 
-### `bool Interval.isRunning()`
+#### `bool Interval.isRunning()`
 
 Returns `true` if interval is running.
 
@@ -54,7 +56,7 @@ Returns `true` if interval is running.
 
 **Returns**: `bool`.
 
-### `bool Interval.isFinished()`
+#### `bool Interval.isFinished()`
 
 Returns `true` if interval is finished.
 
@@ -62,11 +64,7 @@ Returns `true` if interval is finished.
 
 **Returns**: `bool`.
 
-## Timer
-
-Run only once until time is reached.
-
-### Interval usage example
+### `Interval` usage example
 
 ```c++
 #include <Lib_Interval.h>
@@ -96,11 +94,17 @@ void loop() {
 }
 ```
 
-### Constructor `Timer(unsigned long time = 0)`
+## Class `Timer`
+
+Run only once until time is reached.
+
+### `Timer` methods
+
+#### `Timer(unsigned long time = 0)` constructor
 
 If `time` has a value, the timer will start _on setup_.
 
-### `Timer Timer.set(unsigned long time)`
+#### `Timer Timer.set(unsigned long time)`
 
 Set timer time.
 
@@ -110,7 +114,7 @@ Set timer time.
 
 **Returns**: `Timer` instance.
 
-### `Timer Timer.add(unsigned long time)`
+#### `Timer Timer.add(unsigned long time)`
 
 Add time to timer time.
 
@@ -120,7 +124,7 @@ Add time to timer time.
 
 **Returns**: `Timer` instance.
 
-### `Timer Timer.start(unsigned long time = 0)`
+#### `Timer Timer.start(unsigned long time = 0)`
 
 When timer time is reached, [`onFinish`](#bool-timeronfinish) will returns true.
 
@@ -130,37 +134,37 @@ When timer time is reached, [`onFinish`](#bool-timeronfinish) will returns true.
 
 **Returns**: `Timer` instance.
 
-### `Timer Timer.stop()`
+#### `Timer Timer.stop()`
 
 Stop working timer without running [`onFinish`](#bool-timeronfinish).
 
 **Returns**: `Timer` instance.
 
-### `bool Timer.onDone()`
+#### `bool Timer.onDone()`
 
 Returns true only once when the time is reached or wait canceled.
 
 **Returns**: `bool`.
 
-### `bool Timer.onFinish()`
+#### `bool Timer.onFinish()`
 
 Returns true only once when the time is reached.
 
 **Returns**: `bool`.
 
-### `bool Timer.isRunning()`
+#### `bool Timer.isRunning()`
 
 Returns true when timer is waiting.
 
 **Returns**: `bool`.
 
-### `bool Timer.isFinished()`
+#### `bool Timer.isFinished()`
 
 Returns true when timer is not waiting.
 
 **Returns**: `bool`.
 
-### Timer usage example
+### `Timer` usage example
 
 ```c++
 #include <Lib_Timer.h>
@@ -192,11 +196,13 @@ void loop() {
 }
 ```
 
-## While
+## Class `While`
 
 While loop without blocking the main loop.
 
-### `bool While.on(unsigned long time, bool condition = true)`
+### `While` methods
+
+#### `bool While.on(unsigned long time, bool condition = true)`
 
 On each `while` step.
 
@@ -207,7 +213,7 @@ On each `while` step.
 
 **Returns**: `true` when the code should be executed.
 
-### While usage example
+### `While` usage example
 
 ```c++
 #include <Lib_While.h>

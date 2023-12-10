@@ -8,8 +8,7 @@
  * Control Pin Out Digital pin.
  *
  * @note Connection:
- *  {pin} <> [Led +]
- *  (-) <> [Led -]
+ *  {pin} <> [Led + | Led -] <> (-)
  */
 class PinOutDigital: public Runnable {
   private:

@@ -56,8 +56,7 @@ Create a button instance.
 
 **Connection diagram**:
 
-- `{pin}` <-> `[Button Pin A]`
-- `[Button Pin B]` <-> `(-)`
+- `{pin}` <-> `[Button]` <-> `(-)`
 
 #### `bool Button.onClick()`
 
@@ -129,3 +128,19 @@ void loop() {
   }
 }
 ```
+
+## Class `LedDisplay8`
+
+See [LedDisplay8](/Component_LedDisplay8.h) component source code.
+
+## Class `PinInDigital`
+
+See [PinInDigital](/Component_PinInDigital.h) component source code.
+
+## Class `PinOutDigital`
+
+See [PinOutDigital](/Component_PinOutDigital.h) component source code.
+
+## Class `ShiftRegister`
+
+See [ShiftRegister](/Component_ShiftRegister.h) component source code.

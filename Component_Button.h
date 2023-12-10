@@ -17,8 +17,7 @@ enum ButtonState {
  *
  * @see ButtonState
  * @note Connection:
- *  {pin} <> [Button Pin A]
- *  [Button Pin B] <> (-)
+ *  {pin} <> [Button] <> (-)
  */
 class Button: public Runnable {
   private:
