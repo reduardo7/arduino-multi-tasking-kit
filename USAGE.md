@@ -54,9 +54,15 @@ Create a button instance.
 
 - `uint8_t pin` - Button pin.
 
+**Connection diagram**:
+
+- `{pin}` <-> `[Button Pin A]`
+- `[Button Pin B]` <-> `(-)`
+
 #### `bool Button.onClick()`
 
-Get when the button is clicked.
+Get when the button is clicked ([long click](#bool-buttononlongclick)
+or [short click](#bool-buttononshortclick)).
 
 **Return**: `bool` - `true` if the button is clicked.
 
