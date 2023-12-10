@@ -3,6 +3,9 @@
 
 #include "App_Runnable.h"
 
+/**
+ * While loop without blocking the main loop.
+ */
 class While: public Runnable {
   private:
     unsigned long _time;
@@ -18,6 +21,12 @@ class While: public Runnable {
       this->_current = millis();
     }
 
+    /**
+     * On each `while` step.
+     *
+     * @param time Interval in milliseconds.
+     * @param condition Condition to be true.
+     */
     bool on(unsigned long time, bool condition = true) {
       if (condition && this->_time >= this->_current) {
         this->_current = this->_time + time;
