@@ -47,3 +47,4 @@ See [`/examples`](./examples).
 ## References
 
 - [Arduino the Object Oriented way](https://paulmurraycbr.github.io/ArduinoTheOOWay.html).
+- [Arduino Object Oriented Programming (OOP)](https://roboticsbackend.com/arduino-object-oriented-programming-oop)
